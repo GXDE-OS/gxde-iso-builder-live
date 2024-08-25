@@ -50,6 +50,10 @@ set +e
 # 安装应用
 sudo $programPath/pardus-chroot $debianRootfsPath
 sudo chroot $debianRootfsPath apt update
+if [[ $2 == "unstable" ]]; then
+    sudo chroot $debianRootfsPath apt install gxde-testing-source -y
+    sudo chroot $debianRootfsPath apt update
+fi
 sudo chroot $debianRootfsPath apt install gxde-desktop deepin-installer --install-recommends -y
 sudo rm -rf $debianRootfsPath/var/lib/dpkg/info/plymouth-theme-gxde-logo.postinst
 sudo chroot $debianRootfsPath apt install live-task-recommended live-task-standard live-config-systemd \
