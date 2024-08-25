@@ -41,6 +41,7 @@ if [[ $1 == loong64 ]]; then
     sudo cp $programPath/debian-unreleased.list $debianRootfsPath/etc/apt/sources.list.d/debian-unreleased.list -v
 else
     sudo cp $programPath/debian.list $debianRootfsPath/etc/apt/sources.list.d/debian.list -v
+    sudo cp $programPath/debian-backports.list $debianRootfsPath/etc/apt/sources.list.d/debian-backports.list -v
     sudo cp $programPath/99bookworm-backports $debianRootfsPath/etc/apt/preferences.d/ -v
 fi
 sudo sed -i "s/main/main contrib non-free non-free-firmware/g" $debianRootfsPath/etc/apt/sources.list

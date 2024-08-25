@@ -1,4 +1,4 @@
-deb [trusted=true] http://mirror.gxde.gfdgdxi.top/gxde-os-mirror ./
+deb [trusted=true] http://repo-gxde.gfdgdxi.top/gxde-os-mirror ./
 
 # Mirror 1
 #deb [trusted=true] http://gfdgdxi.ss5.tunnelfrp.com/GXDE/ ./
