@@ -54,23 +54,23 @@ if [[ $2 == "unstable" ]]; then
     sudo chroot $debianRootfsPath apt install gxde-testing-source -y
     sudo chroot $debianRootfsPath apt update
 fi
-sudo chroot $debianRootfsPath apt install gxde-desktop deepin-installer --install-recommends -y
+sudo chroot $debianRootfsPath apt install gxde-desktop calamares calamares-settings-gxde --install-recommends -y
 sudo rm -rf $debianRootfsPath/var/lib/dpkg/info/plymouth-theme-gxde-logo.postinst
 sudo chroot $debianRootfsPath apt install live-task-recommended live-task-standard live-config-systemd \
     live-boot -y
 sudo chroot $debianRootfsPath apt install fcitx5-pinyin libudisks2-qt5-0 fcitx5 -y
 sudo chroot $debianRootfsPath apt install spark-store -y
 sudo chroot $debianRootfsPath aptss update
-sudo chroot $debianRootfsPath aptss install spark-deepin-wine-runner -y
+#sudo chroot $debianRootfsPath aptss install spark-deepin-wine-runner -y
 sudo chroot $debianRootfsPath aptss full-upgrade -y
 if [[ $1 == loong64 ]]; then
     sudo chroot $debianRootfsPath aptss install cn.loongnix.lbrowser -y
 else
     sudo chroot $debianRootfsPath apt install firefox-esr -y
 fi
-if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
-    sudo chroot $debianRootfsPath aptss install spark-box64 -y
-fi
+#if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
+#    sudo chroot $debianRootfsPath aptss install spark-box64 -y
+#fi
 # 卸载无用应用
 sudo chroot $debianRootfsPath apt install deepin-terminal grub-efi network-manager-gnome -y
 sudo chroot $debianRootfsPath apt purge mlterm mlterm-tiny deepin-terminal-gtk ibus -y
