@@ -54,7 +54,7 @@ if [[ $2 == "unstable" ]]; then
     sudo chroot $debianRootfsPath apt install gxde-testing-source -y
     sudo chroot $debianRootfsPath apt update
 fi
-sudo chroot $debianRootfsPath apt install gxde-desktop calamares calamares-settings-gxde --install-recommends -y
+sudo chroot $debianRootfsPath apt install gxde-desktop calamares-settings-gxde --install-recommends -y
 sudo rm -rf $debianRootfsPath/var/lib/dpkg/info/plymouth-theme-gxde-logo.postinst
 sudo chroot $debianRootfsPath apt install live-task-recommended live-task-standard live-config-systemd \
     live-boot -y
