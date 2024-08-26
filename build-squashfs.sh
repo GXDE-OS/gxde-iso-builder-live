@@ -76,6 +76,9 @@ fi
 sudo chroot $debianRootfsPath apt install grub-efi network-manager-gnome -y
 sudo chroot $debianRootfsPath apt purge mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings -y
 # 安装内核
+if [[ $1 != amd64 ]]; then
+    sudo chroot $debianRootfsPath apt autopurge "linux-image-*" "linux-headers-*" -y
+fi
 sudo chroot $debianRootfsPath apt install linux-kernel-gxde-$1 -y
 sudo chroot $debianRootfsPath apt install linux-firmware -y
 sudo chroot $debianRootfsPath apt install firmware-linux -y
