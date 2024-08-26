@@ -75,12 +75,7 @@ fi
 sudo chroot $debianRootfsPath apt install deepin-terminal grub-efi network-manager-gnome -y
 sudo chroot $debianRootfsPath apt purge mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings -y
 # 安装内核
-if [[ $1 == loong64 ]]; then
-    # loong64 安装定制的内核
-    sudo chroot $debianRootfsPath apt install linux-kernel-gxde-loong64 -y
-else
-    sudo chroot $debianRootfsPath apt install linux-image-amd64 linux-headers-amd64 -y
-fi
+sudo chroot $debianRootfsPath apt install linux-kernel-gxde-$1 -y
 sudo chroot $debianRootfsPath apt install linux-firmware -y
 sudo chroot $debianRootfsPath apt install firmware-linux -y
 # 清空临时文件
