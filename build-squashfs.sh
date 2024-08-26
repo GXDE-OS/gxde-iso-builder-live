@@ -73,7 +73,7 @@ fi
 #fi
 # 卸载无用应用
 sudo chroot $debianRootfsPath apt install deepin-terminal grub-efi network-manager-gnome -y
-sudo chroot $debianRootfsPath apt purge mlterm mlterm-tiny deepin-terminal-gtk ibus -y
+sudo chroot $debianRootfsPath apt purge mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings -y
 # 安装内核
 if [[ $1 == loong64 ]]; then
     # loong64 安装定制的内核
