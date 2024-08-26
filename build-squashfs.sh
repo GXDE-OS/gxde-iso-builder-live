@@ -87,6 +87,7 @@ sudo chroot $debianRootfsPath apt install firmware-linux -y
 sudo chroot $debianRootfsPath apt autopurge -y
 sudo chroot $debianRootfsPath apt clean
 sudo touch $debianRootfsPath/etc/deepin/calamares
+sudo rm $debianRootfsPath/etc/apt/sources.list.d/debian.list -rf
 sudo rm -rf $debianRootfsPath/var/log/*
 sudo rm -rf $debianRootfsPath/root/.bash_history
 sudo rm -rf $debianRootfsPath/etc/apt/sources.list.d/temp.list
