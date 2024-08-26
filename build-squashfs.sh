@@ -49,6 +49,7 @@ sudo cp $programPath/gxde-temp.list $debianRootfsPath/etc/apt/sources.list.d/tem
 set +e
 # 安装应用
 sudo $programPath/pardus-chroot $debianRootfsPath
+sudo chroot $debianRootfsPath apt install debian-ports-archive-keyring debian-archive-keyring -y
 sudo chroot $debianRootfsPath apt update
 if [[ $2 == "unstable" ]]; then
     sudo chroot $debianRootfsPath apt install gxde-testing-source -y
@@ -72,7 +73,7 @@ fi
 #    sudo chroot $debianRootfsPath aptss install spark-box64 -y
 #fi
 # 卸载无用应用
-sudo chroot $debianRootfsPath apt install deepin-terminal grub-efi network-manager-gnome -y
+sudo chroot $debianRootfsPath apt install grub-efi network-manager-gnome -y
 sudo chroot $debianRootfsPath apt purge mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings -y
 # 安装内核
 sudo chroot $debianRootfsPath apt install linux-kernel-gxde-$1 -y
