@@ -98,5 +98,7 @@ UNMount $debianRootfsPath
 # 封装
 cd $debianRootfsPath
 set -e
+sudo rm -rf ../filesystem.squashfs
 sudo mksquashfs * ../filesystem.squashfs
-du -h ../filesystem.squashfs
+cd ..
+du -h filesystem.squashfs
