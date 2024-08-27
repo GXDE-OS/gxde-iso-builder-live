@@ -67,13 +67,14 @@ sudo chroot $debianRootfsPath aptss full-upgrade -y
 if [[ $1 == loong64 ]]; then
     sudo chroot $debianRootfsPath aptss install cn.loongnix.lbrowser -y
 else
-    sudo chroot $debianRootfsPath apt install firefox-esr -y
+    sudo chroot $debianRootfsPath apt install chromium -y
 fi
 #if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
 #    sudo chroot $debianRootfsPath aptss install spark-box64 -y
 #fi
-# 卸载无用应用
 sudo chroot $debianRootfsPath apt install grub-efi network-manager-gnome -y
+sudo chroot $debianRootfsPath apt install grub-efi-$1 -y
+# 卸载无用应用
 sudo chroot $debianRootfsPath apt purge mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings -y
 # 安装内核
 if [[ $1 != amd64 ]]; then
