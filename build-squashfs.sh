@@ -67,7 +67,7 @@ sudo chroot $debianRootfsPath aptss full-upgrade -y
 if [[ $1 == loong64 ]]; then
     sudo chroot $debianRootfsPath aptss install cn.loongnix.lbrowser -y
 else
-    sudo chroot $debianRootfsPath apt install chromium -y
+    sudo chroot $debianRootfsPath apt install chromium chromium-l10n -y
 fi
 #if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
 #    sudo chroot $debianRootfsPath aptss install spark-box64 -y
