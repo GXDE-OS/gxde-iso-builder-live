@@ -83,6 +83,7 @@ fi
 sudo chroot $debianRootfsPath apt install linux-kernel-gxde-$1 -y
 sudo chroot $debianRootfsPath apt install linux-firmware -y
 sudo chroot $debianRootfsPath apt install firmware-linux -y
+sudo chroot $debianRootfsPath apt install firmware-iwlwifi firmware-realtek -y
 # 清空临时文件
 sudo chroot $debianRootfsPath apt autopurge -y
 sudo chroot $debianRootfsPath apt clean
