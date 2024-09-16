@@ -81,6 +81,10 @@ if [[ $1 != amd64 ]]; then
     sudo chroot $debianRootfsPath apt autopurge "linux-image-*" "linux-headers-*" -y
 fi
 sudo chroot $debianRootfsPath apt install linux-kernel-gxde-$1 -y
+# 如果为 amd64/i386 则同时安装 oldstable 内核
+if [[ $1 == amd64 ]] || [[ $1 == i386 ]]; then
+    sudo chroot $debianRootfsPath apt install linux-kernel-oldstable-gxde-$1 -y
+fi
 sudo chroot $debianRootfsPath apt install linux-firmware -y
 sudo chroot $debianRootfsPath apt install firmware-linux -y
 sudo chroot $debianRootfsPath apt install firmware-iwlwifi firmware-realtek -y
