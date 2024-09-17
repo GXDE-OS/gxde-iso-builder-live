@@ -1,4 +1,14 @@
 #!/bin/bash
+function chrootCommand() {
+    for i in {1..5};
+    do
+        sudo chroot $debianRootfsPath "$@"
+        if [[ $? == 0 ]]; then
+            break
+        fi
+        sleep 1
+    done
+}
 function UNMount() {
     sudo umount "$1/sys/firmware/efi/efivars"
     sudo umount "$1/sys"
@@ -50,58 +60,58 @@ sudo cp $programPath/gxde-temp.list $debianRootfsPath/etc/apt/sources.list.d/tem
 set +e
 # 安装应用
 sudo $programPath/pardus-chroot $debianRootfsPath
-sudo chroot $debianRootfsPath apt install debian-ports-archive-keyring debian-archive-keyring -y
-sudo chroot $debianRootfsPath apt update
+chrootCommand apt install debian-ports-archive-keyring debian-archive-keyring -y
+chrootCommand apt update
 if [[ $2 == "unstable" ]]; then
-    sudo chroot $debianRootfsPath apt install gxde-testing-source -y
-    sudo chroot $debianRootfsPath apt update
+    chrootCommand apt install gxde-testing-source -y
+    chrootCommand apt update
 fi
-sudo chroot $debianRootfsPath apt install gxde-desktop calamares-settings-gxde --install-recommends -y
+chrootCommand apt install gxde-desktop calamares-settings-gxde --install-recommends -y
 sudo rm -rf $debianRootfsPath/var/lib/dpkg/info/plymouth-theme-gxde-logo.postinst
-sudo chroot $debianRootfsPath apt install live-task-recommended live-task-standard live-config-systemd \
+chrootCommand apt install live-task-recommended live-task-standard live-config-systemd \
     live-boot -y
-sudo chroot $debianRootfsPath apt install fcitx5-pinyin libudisks2-qt5-0 fcitx5 -y
-sudo chroot $debianRootfsPath apt install spark-store -y
-sudo chroot $debianRootfsPath aptss update
-#sudo chroot $debianRootfsPath aptss install spark-deepin-wine-runner -y
-sudo chroot $debianRootfsPath aptss full-upgrade -y
+chrootCommand apt install fcitx5-pinyin libudisks2-qt5-0 fcitx5 -y
+chrootCommand apt install spark-store -y
+chrootCommand aptss update
+#chrootCommand aptss install spark-deepin-wine-runner -y
+chrootCommand aptss full-upgrade -y
 if [[ $1 == loong64 ]]; then
-    sudo chroot $debianRootfsPath aptss install cn.loongnix.lbrowser -y
+    chrootCommand aptss install cn.loongnix.lbrowser -y
 else
-    sudo chroot $debianRootfsPath apt install chromium chromium-l10n -y
+    chrootCommand apt install chromium chromium-l10n -y
 fi
 #if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
-#    sudo chroot $debianRootfsPath aptss install spark-box64 -y
+#    chrootCommand aptss install spark-box64 -y
 #fi
-#sudo chroot $debianRootfsPath apt install network-manager-gnome -y
-#sudo chroot $debianRootfsPath apt install grub-efi-$1 -y
+#chrootCommand apt install network-manager-gnome -y
+#chrootCommand apt install grub-efi-$1 -y
 #if [[ $1 != amd64 ]]; then
-#    sudo chroot $debianRootfsPath apt install grub-efi-$1 -y
+#    chrootCommand apt install grub-efi-$1 -y
 #fi
 # 卸载无用应用
-sudo chroot $debianRootfsPath apt purge mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings -y
+chrootCommand apt purge mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings -y
 # 安装内核
 if [[ $1 != amd64 ]]; then
-    sudo chroot $debianRootfsPath apt autopurge "linux-image-*" "linux-headers-*" -y
+    chrootCommand apt autopurge "linux-image-*" "linux-headers-*" -y
 fi
-sudo chroot $debianRootfsPath apt install linux-kernel-gxde-$1 -y
+chrootCommand apt install linux-kernel-gxde-$1 -y
 # 如果为 amd64/i386 则同时安装 oldstable 内核
 if [[ $1 == amd64 ]] || [[ $1 == i386 ]]; then
-    sudo chroot $debianRootfsPath apt install linux-kernel-oldstable-gxde-$1 -y
+    chrootCommand apt install linux-kernel-oldstable-gxde-$1 -y
 fi
-sudo chroot $debianRootfsPath apt install linux-firmware -y
-sudo chroot $debianRootfsPath apt install firmware-linux -y
-sudo chroot $debianRootfsPath apt install firmware-iwlwifi firmware-realtek -y
+chrootCommand apt install linux-firmware -y
+chrootCommand apt install firmware-linux -y
+chrootCommand apt install firmware-iwlwifi firmware-realtek -y
 # 清空临时文件
-sudo chroot $debianRootfsPath apt autopurge -y
-sudo chroot $debianRootfsPath apt clean
+chrootCommand apt autopurge -y
+chrootCommand apt clean
 # 下载所需的安装包
-sudo chroot $debianRootfsPath apt install grub-pc --download-only -y
-sudo chroot $debianRootfsPath apt install grub-efi-$1 --download-only -y
+chrootCommand apt install grub-pc --download-only -y
+chrootCommand apt install grub-efi-$1 --download-only -y
 mkdir grub-deb
 sudo cp $debianRootfsPath/var/cache/apt/archives/*.deb grub-deb
 # 清空临时文件
-sudo chroot $debianRootfsPath apt clean
+chrootCommand apt clean
 sudo touch $debianRootfsPath/etc/deepin/calamares
 sudo rm $debianRootfsPath/etc/apt/sources.list.d/debian.list -rf
 sudo rm $debianRootfsPath/etc/apt/sources.list.d/debian-backports.list -rf
