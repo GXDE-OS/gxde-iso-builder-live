@@ -27,6 +27,7 @@ if [[ -d $debianRootfsPath ]]; then
     UNMount $debianRootfsPath
     sudo rm -rf $debianRootfsPath
 fi
+sudo rm -rf grub-deb
 sudo apt install debootstrap debian-archive-keyring \
     debian-ports-archive-keyring qemu-user-static -y
 # 构建核心系统
@@ -72,8 +73,11 @@ fi
 #if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
 #    sudo chroot $debianRootfsPath aptss install spark-box64 -y
 #fi
-sudo chroot $debianRootfsPath apt install grub-efi network-manager-gnome -y
-sudo chroot $debianRootfsPath apt install grub-efi-$1 -y
+#sudo chroot $debianRootfsPath apt install network-manager-gnome -y
+#sudo chroot $debianRootfsPath apt install grub-efi-$1 -y
+#if [[ $1 != amd64 ]]; then
+#    sudo chroot $debianRootfsPath apt install grub-efi-$1 -y
+#fi
 # 卸载无用应用
 sudo chroot $debianRootfsPath apt purge mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings -y
 # 安装内核
@@ -90,6 +94,13 @@ sudo chroot $debianRootfsPath apt install firmware-linux -y
 sudo chroot $debianRootfsPath apt install firmware-iwlwifi firmware-realtek -y
 # 清空临时文件
 sudo chroot $debianRootfsPath apt autopurge -y
+sudo chroot $debianRootfsPath apt clean
+# 下载所需的安装包
+sudo chroot $debianRootfsPath apt install grub-pc --download-only -y
+sudo chroot $debianRootfsPath apt install grub-efi-$1 --download-only -y
+mkdir grub-deb
+sudo cp $debianRootfsPath/var/cache/apt/archives/*.deb grub-deb
+# 清空临时文件
 sudo chroot $debianRootfsPath apt clean
 sudo touch $debianRootfsPath/etc/deepin/calamares
 sudo rm $debianRootfsPath/etc/apt/sources.list.d/debian.list -rf
