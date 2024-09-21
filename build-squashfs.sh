@@ -110,6 +110,7 @@ chrootCommand apt clean
 # 下载所需的安装包
 chrootCommand apt install grub-pc --download-only -y
 chrootCommand apt install grub-efi-$1 --download-only -y
+chrootCommand apt install grub-efi --download-only -y
 chrootCommand apt install cryptsetup-initramfs cryptsetup keyutils --download-only -y
 
 mkdir grub-deb
