@@ -134,4 +134,38 @@ set -e
 sudo rm -rf ../filesystem.squashfs
 sudo mksquashfs * ../filesystem.squashfs
 cd ..
-du -h filesystem.squashfs
+#du -h filesystem.squashfs
+# 构建 ISO
+if [[ ! -f iso-template/$1-build.sh ]]; then
+    echo 不存在 $1 架构的构建模板，不进行构建
+    exit
+fi
+cd iso-template/$1
+# 清空废弃文件
+rm -rfv live/*
+rm -rfv deb/*/
+# 添加 deb 包
+cd deb
+./addmore.py ../../grub-deb/*.deb
+cd ..
+# 拷贝内核
+# 获取内核数量
+kernelNumber=$(ls -1 ../$debianRootfsPath/boot/vmlinuz-*)
+vmlinuzList=($(ls -1 ../$debianRootfsPath/boot/vmlinuz-* | sort -rV))
+initrdList=($(ls -1 ../$debianRootfsPath/boot/initrd.img-* | sort -rV))
+for i in $( seq 0 $(expr $kernelNumber - 1) )
+do
+    if [[ i == 0 ]]; then
+        cp ./$debianRootfsPath/boot/${vmlinuzList[i]} live/vmlinuz -v
+        cp ./$debianRootfsPath/boot/${initrdList[i]} live/initrd.img -v
+    fi
+    if [[ i == 1 ]]; then
+        cp ./$debianRootfsPath/boot/${vmlinuzList[i]} live/vmlinuz-oldstable -v
+        cp ./$debianRootfsPath/boot/${initrdList[i]} live/initrd.img-oldstable -v
+    fi
+done
+cd ..
+bash $1-build.sh
+mv gxde.iso ..
+cd ..
+du -h gxde.iso
