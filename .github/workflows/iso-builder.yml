@@ -1,0 +1,96 @@
+name: Building ISO (tianlu)
+run-name: Building ISO (tianlu)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  i386:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Building
+        run: |
+          sudo bash build-squashfs.sh i386 unstable
+
+      - name: upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: gxde-os-i386-tianlu
+          path: gxde.iso
+  
+  amd64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Building
+        run: |
+          sudo bash build-squashfs.sh amd64 unstable
+
+      - name: upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: gxde-os-amd64-tianlu
+          path: gxde.iso
+
+  arm64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Building
+        run: |
+          sudo bash build-squashfs.sh arm64 unstable
+
+      - name: upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: gxde-os-arm64-tianlu
+          path: gxde.iso
+        
+  mips64el:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Building
+        run: |
+          sudo bash build-squashfs.sh mips64el unstable
+
+      - name: upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: gxde-os-mips64el-tianlu
+          path: gxde.iso
+
+  loong64:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Config
+        run: |
+            sudo apt install debian-ports-archive-keyring -y
+            sudo cp /usr/share/keyrings/debian-archive-keyring.gpg /usr/share/keyrings/debian-ports-archive-keyring.gpg -v
+
+      - name: Building
+        run: |
+          sudo bash build-squashfs.sh loong64 unstable
+
+      - name: upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: gxde-os-loong64-tianlu
+          path: gxde.iso
+
+
+
+
+

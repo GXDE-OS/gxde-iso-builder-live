@@ -30,7 +30,9 @@ function UNMount() {
 programPath=$(cd $(dirname $0); pwd)
 debianRootfsPath=debian-rootfs
 if [[ $1 == "" ]]; then
-    echo 请指定架构：amd64 arm64 loong64
+    echo 请指定架构：i386 amd64 arm64 mips64el loong64
+    echo 还可以再加一个参数：unstable 以构建内测镜像
+    echo 如 $0 amd64 unstable
     exit 1
 fi
 if [[ -d $debianRootfsPath ]]; then
@@ -39,7 +41,7 @@ if [[ -d $debianRootfsPath ]]; then
 fi
 sudo rm -rf grub-deb
 sudo apt install debootstrap debian-archive-keyring \
-    debian-ports-archive-keyring qemu-user-static -y
+    debian-ports-archive-keyring qemu-user-static genisoimage -y
 # 构建核心系统
 set -e
 if [[ $1 == loong64 ]]; then
