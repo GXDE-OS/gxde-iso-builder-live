@@ -106,6 +106,7 @@ fi
 chrootCommand apt install linux-firmware -y
 chrootCommand apt install firmware-linux -y
 chrootCommand apt install firmware-iwlwifi firmware-realtek -y
+chrootCommand apt install grub-common -y
 # 清空临时文件
 chrootCommand apt autopurge -y
 chrootCommand apt clean
@@ -113,6 +114,7 @@ chrootCommand apt clean
 chrootCommand apt install grub-pc --download-only -y
 chrootCommand apt install grub-efi-$1 --download-only -y
 chrootCommand apt install grub-efi --download-only -y
+chrootCommand apt install grub-common --download-only -y
 chrootCommand apt install cryptsetup-initramfs cryptsetup keyutils --download-only -y
 
 mkdir grub-deb
