@@ -2,17 +2,23 @@
 ###### 这里要写绝对路径
 REPO_DIR="$1"
 DATA_DIR="$REPO_DIR/package-data"
-LOCK_DIR="$REPO_DIR/package-lock"
+function run_in_parallel {
+local max_jobs=10
+    while [ $(jobs -p | wc -l) -ge "$max_jobs" ]; do
+        sleep 1
+    done
+    "$@" &
+}
 
 ######阶段1：检查data目录下的.deb.package文件，去仓库验证是否有对应的.deb
-######如果有，则对比时间戳，若仓库的新于.deb.package，则更新，否则continue
+######如果有，则对比时间戳，若仓库的新于.deb.package，则更新，否则return
 ######如果没有，则删除此文件
 mkdir -p $DATA_DIR
-rm -rf $LOCK_DIR
+
 
 cd $DATA_DIR
-for DEB_PACKAGE_INFO_PATH in `find . -name '*.deb.package'`;do
 
+function check_deb_exist(){
 DEB_PATH=`echo ".${DEB_PACKAGE_INFO_PATH%%.package}"` 
 if [ -e $DEB_PATH ];then
 	if [ "$DEB_PACKAGE_INFO_PATH"  -ot "$DEB_PATH" ] ;then
@@ -28,37 +34,41 @@ rm $DEB_PACKAGE_INFO_PATH
 
 fi
 
+}
+
+for DEB_PACKAGE_INFO_PATH in `find . -name '*.deb.package'`;do
+
+run_in_parallel check_deb_exist
+
 
 done
+wait
+
 
 ##### 阶段2：反查deb，如果有.deb.package，则跳过，否则生成
 cd $REPO_DIR
 
-for DEB_PATH in `find . -name '*.deb'`;do
-
+function generate_package_info(){
 if [ -e $DATA_DIR/$DEB_PATH.package ];then
-continue
+return
 
 else
 mkdir -p $DATA_DIR/`dirname $DEB_PATH`
-mkdir -p $LOCK_DIR/`dirname $DEB_PATH`
-touch $LOCK_DIR/$DEB_PATH.lock
-until [ "`find $LOCK_DIR -name '*.deb.lock' | wc -l `" -lt "15" ];do ###最多同时15进程
-sleep 1.5
-done
+apt-ftparchive packages $DEB_PATH > $DATA_DIR/$DEB_PATH.package && echo "新包 $DEB_PATH 已生成package文件"
 
-
-apt-ftparchive packages $DEB_PATH > $DATA_DIR/$DEB_PATH.package && echo "新包 $DEB_PATH 已生成package文件" && rm $LOCK_DIR/$DEB_PATH.lock &
 fi
+
+}
+for DEB_PATH in `find . -name '*.deb'`;do
+
+run_in_parallel generate_package_info
+
+
 done
-
-#####删除data目录下所有空文件夹
-until [ -z "`find $LOCK_DIR -name '*.deb.lock'`"  ];do
-sleep 1
-done
+wait 
 
 
-rm -r $LOCK_DIR
+
 
 find $DATA_DIR -type d -empty -exec rm -rf {} \;
 
@@ -68,3 +78,6 @@ cd $DATA_DIR
 for DEB_PACKAGE_INFO_PATH in `find . -name '*.deb.package'`;do
 cat $DEB_PACKAGE_INFO_PATH >> $REPO_DIR/Packages
 done
+
+
+apt-ftparchive release $REPO_DIR/ > $REPO_DIR/Release 
