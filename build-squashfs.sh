@@ -75,7 +75,13 @@ sudo rm -rf $debianRootfsPath/var/lib/dpkg/info/plymouth-theme-gxde-logo.postins
 chrootCommand apt install live-task-recommended live-task-standard live-config-systemd \
     live-boot -y
 chrootCommand apt install fcitx5-pinyin libudisks2-qt5-0 fcitx5 -y
+
+if [[ $1 == i386 ]]; then
+chrootCommand apt install aptss -y
+else
 chrootCommand apt install spark-store -y
+fi
+
 chrootCommand aptss update
 #chrootCommand aptss install spark-deepin-wine-runner -y
 chrootCommand aptss full-upgrade -y
