@@ -81,8 +81,10 @@ chrootCommand aptss update
 chrootCommand aptss full-upgrade -y
 if [[ $1 == loong64 ]]; then
     chrootCommand aptss install cn.loongnix.lbrowser -y
-else
-    chrootCommand apt install chromium chromium-l10n -y
+elif [[ $1 == amd64 ]];then
+    chrootCommand aptss install firefox-spark -y
+else 
+    chrootCommand aptss install chromium chromium-l10n -y
 fi
 #if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
 #    chrootCommand aptss install spark-box64 -y
@@ -101,26 +103,26 @@ fi
 chrootCommand apt install linux-kernel-gxde-$1 -y
 # 如果为 amd64/i386 则同时安装 oldstable 内核
 if [[ $1 == amd64 ]] || [[ $1 == i386 ]]; then
-    chrootCommand apt install linux-kernel-oldstable-gxde-$1 -y
+    chrootCommand aptss install linux-kernel-oldstable-gxde-$1 -y
 fi
-chrootCommand apt install linux-firmware -y
-chrootCommand apt install firmware-linux -y
-chrootCommand apt install firmware-iwlwifi firmware-realtek -y
-chrootCommand apt install grub-common -y
+chrootCommand aptss install linux-firmware -y
+chrootCommand aptss install firmware-linux -y
+chrootCommand aptss install firmware-iwlwifi firmware-realtek -y
+chrootCommand aptss install grub-common -y
 # 清空临时文件
-chrootCommand apt autopurge -y
-chrootCommand apt clean
+chrootCommand aptss autopurge -y
+chrootCommand aptss clean
 # 下载所需的安装包
-chrootCommand apt install grub-pc --download-only -y
-chrootCommand apt install grub-efi-$1 --download-only -y
-chrootCommand apt install grub-efi --download-only -y
-chrootCommand apt install grub-common --download-only -y
-chrootCommand apt install cryptsetup-initramfs cryptsetup keyutils --download-only -y
+chrootCommand aptss install grub-pc --download-only -y
+chrootCommand aptss install grub-efi-$1 --download-only -y
+chrootCommand aptss install grub-efi --download-only -y
+chrootCommand aptss install grub-common --download-only -y
+chrootCommand aptss install cryptsetup-initramfs cryptsetup keyutils --download-only -y
 
 mkdir grub-deb
 sudo cp $debianRootfsPath/var/cache/apt/archives/*.deb grub-deb
 # 清空临时文件
-chrootCommand apt clean
+chrootCommand aptss clean
 sudo touch $debianRootfsPath/etc/deepin/calamares
 sudo rm $debianRootfsPath/etc/apt/sources.list.d/debian.list -rf
 sudo rm $debianRootfsPath/etc/apt/sources.list.d/debian-backports.list -rf
