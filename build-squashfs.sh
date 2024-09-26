@@ -70,15 +70,14 @@ if [[ $2 == "unstable" ]]; then
     chrootCommand apt install gxde-testing-source -y
     chrootCommand apt update
 fi
-chrootCommand apt install gxde-desktop calamares-settings-gxde --install-recommends -y
-sudo rm -rf $debianRootfsPath/var/lib/dpkg/info/plymouth-theme-gxde-logo.postinst
-chrootCommand apt install live-task-recommended live-task-standard live-config-systemd \
-    live-boot -y
-chrootCommand apt install fcitx5-pinyin libudisks2-qt5-0 fcitx5 -y
-
-if [[ $1 == i386 ]]; then
 chrootCommand apt install aptss -y
-else
+chrootCommand aptss install gxde-desktop calamares-settings-gxde --install-recommends -y
+sudo rm -rf $debianRootfsPath/var/lib/dpkg/info/plymouth-theme-gxde-logo.postinst
+chrootCommand aptss install live-task-recommended live-task-standard live-config-systemd \
+    live-boot -y
+chrootCommand aptss install fcitx5-pinyin libudisks2-qt5-0 fcitx5 -y
+
+if [[ $1 != i386 ]]; then
 chrootCommand apt install spark-store -y
 fi
 
