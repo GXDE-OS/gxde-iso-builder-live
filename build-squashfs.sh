@@ -41,7 +41,8 @@ if [[ -d $debianRootfsPath ]]; then
 fi
 sudo rm -rf grub-deb
 sudo apt install debootstrap debian-archive-keyring \
-    debian-ports-archive-keyring qemu-user-static genisoimage -y
+    debian-ports-archive-keyring qemu-user-static genisoimage \
+    squashfs-tools -y
 # 构建核心系统
 set -e
 if [[ $1 == loong64 ]]; then
