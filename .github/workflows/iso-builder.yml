@@ -77,7 +77,7 @@ jobs:
 
       - name: Config
         run: |
-            sudo apt install debian-ports-archive-keyring -y
+            sudo apt install debian-ports-archive-keyring debian-archive-keyring -y
             sudo cp /usr/share/keyrings/debian-archive-keyring.gpg /usr/share/keyrings/debian-ports-archive-keyring.gpg -v
 
       - name: Building
