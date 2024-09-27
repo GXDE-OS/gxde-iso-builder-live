@@ -13,7 +13,7 @@ jobs:
 
       - name: Building
         run: |
-          sudo bash build-squashfs.sh i386 unstable
+          sudo bash build-squashfs.sh i386 unstable unaptss
 
       - name: upload result
         uses: actions/upload-artifact@v4
@@ -29,7 +29,7 @@ jobs:
 
       - name: Building
         run: |
-          sudo bash build-squashfs.sh amd64 unstable
+          sudo bash build-squashfs.sh amd64 unstable unaptss
 
       - name: upload result
         uses: actions/upload-artifact@v4
@@ -45,7 +45,7 @@ jobs:
 
       - name: Building
         run: |
-          sudo bash build-squashfs.sh arm64 unstable
+          sudo bash build-squashfs.sh arm64 unstable unaptss
 
       - name: upload result
         uses: actions/upload-artifact@v4
@@ -61,7 +61,7 @@ jobs:
 
       - name: Building
         run: |
-          sudo bash build-squashfs.sh mips64el unstable
+          sudo bash build-squashfs.sh mips64el unstable unaptss
 
       - name: upload result
         uses: actions/upload-artifact@v4
@@ -82,7 +82,7 @@ jobs:
 
       - name: Building
         run: |
-          sudo bash build-squashfs.sh loong64 unstable
+          sudo bash build-squashfs.sh loong64 unstable unaptss
 
       - name: upload result
         uses: actions/upload-artifact@v4

@@ -1,1 +1,2 @@
-deb http://mirror.sjtu.edu.cn/debian-ports unreleased main contrib non-free non-free-firmware
+deb [trusted=true] http://mirror.sjtu.edu.cn/debian-ports unstable main contrib non-free non-free-firmware
+deb [trusted=true] http://mirror.sjtu.edu.cn/debian-ports unreleased main contrib non-free non-free-firmware

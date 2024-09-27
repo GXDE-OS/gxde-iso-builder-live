@@ -1,4 +1,11 @@
 #!/bin/bash
+function installWithAptss() {
+    if [[ $isUnAptss == 1 ]]; then
+        chrootCommand apt "$@"
+    else
+        chrootCommand aptss "$@"
+    fi
+}
 function chrootCommand() {
     for i in {1..5};
     do
@@ -39,6 +46,10 @@ if [[ -d $debianRootfsPath ]]; then
     UNMount $debianRootfsPath
     sudo rm -rf $debianRootfsPath
 fi
+isUnAptss=0
+if [[ $1 == unaptss ]] || [[ $2 == unaptss ]]; then
+    isUnAptss=1
+fi
 sudo rm -rf grub-deb
 sudo apt install debootstrap debian-archive-keyring \
     debian-ports-archive-keyring qemu-user-static genisoimage \
@@ -65,35 +76,36 @@ sudo cp $programPath/gxde-temp.list $debianRootfsPath/etc/apt/sources.list.d/tem
 set +e
 # 安装应用
 sudo $programPath/pardus-chroot $debianRootfsPath
-chrootCommand apt install debian-ports-archive-keyring debian-archive-keyring -y
+chrootCommand apt install debian-ports-archive-keyring -y
+chrootCommand apt install debian-archive-keyring -y
 chrootCommand apt update
 if [[ $2 == "unstable" ]]; then
     chrootCommand apt install gxde-testing-source -y
     chrootCommand apt update
 fi
 chrootCommand apt install aptss -y
-chrootCommand aptss install gxde-desktop calamares-settings-gxde --install-recommends -y
+installWithAptss install gxde-desktop calamares-settings-gxde --install-recommends -y
 sudo rm -rf $debianRootfsPath/var/lib/dpkg/info/plymouth-theme-gxde-logo.postinst
-chrootCommand aptss install live-task-recommended live-task-standard live-config-systemd \
+installWithAptss install live-task-recommended live-task-standard live-config-systemd \
     live-boot -y
-chrootCommand aptss install fcitx5-pinyin libudisks2-qt5-0 fcitx5 -y
+installWithAptss install fcitx5-pinyin libudisks2-qt5-0 fcitx5 -y
 
 if [[ $1 != i386 ]]; then
 chrootCommand apt install spark-store -y
 fi
 
-chrootCommand aptss update
-#chrootCommand aptss install spark-deepin-wine-runner -y
-chrootCommand aptss full-upgrade -y
+installWithAptss update
+#installWithAptss install spark-deepin-wine-runner -y
+installWithAptss full-upgrade -y
 if [[ $1 == loong64 ]]; then
-    chrootCommand aptss install cn.loongnix.lbrowser -y
+    installWithAptss install cn.loongnix.lbrowser -y
 elif [[ $1 == amd64 ]];then
-    chrootCommand aptss install firefox-spark -y
+    installWithAptss install firefox-spark -y
 else 
-    chrootCommand aptss install chromium chromium-l10n -y
+    installWithAptss install chromium chromium-l10n -y
 fi
 #if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
-#    chrootCommand aptss install spark-box64 -y
+#    installWithAptss install spark-box64 -y
 #fi
 #chrootCommand apt install network-manager-gnome -y
 #chrootCommand apt install grub-efi-$1 -y
@@ -109,26 +121,26 @@ fi
 chrootCommand apt install linux-kernel-gxde-$1 -y
 # 如果为 amd64/i386 则同时安装 oldstable 内核
 if [[ $1 == amd64 ]] || [[ $1 == i386 ]]; then
-    chrootCommand aptss install linux-kernel-oldstable-gxde-$1 -y
+    installWithAptss install linux-kernel-oldstable-gxde-$1 -y
 fi
-chrootCommand aptss install linux-firmware -y
-chrootCommand aptss install firmware-linux -y
-chrootCommand aptss install firmware-iwlwifi firmware-realtek -y
-chrootCommand aptss install grub-common -y
+installWithAptss install linux-firmware -y
+installWithAptss install firmware-linux -y
+installWithAptss install firmware-iwlwifi firmware-realtek -y
+installWithAptss install grub-common -y
 # 清空临时文件
-chrootCommand aptss autopurge -y
-chrootCommand aptss clean
+installWithAptss autopurge -y
+installWithAptss clean
 # 下载所需的安装包
-chrootCommand aptss install grub-pc --download-only -y
-chrootCommand aptss install grub-efi-$1 --download-only -y
-chrootCommand aptss install grub-efi --download-only -y
-chrootCommand aptss install grub-common --download-only -y
-chrootCommand aptss install cryptsetup-initramfs cryptsetup keyutils --download-only -y
+installWithAptss install grub-pc --download-only -y
+installWithAptss install grub-efi-$1 --download-only -y
+installWithAptss install grub-efi --download-only -y
+installWithAptss install grub-common --download-only -y
+installWithAptss install cryptsetup-initramfs cryptsetup keyutils --download-only -y
 
 mkdir grub-deb
 sudo cp $debianRootfsPath/var/cache/apt/archives/*.deb grub-deb
 # 清空临时文件
-chrootCommand aptss clean
+installWithAptss clean
 sudo touch $debianRootfsPath/etc/deepin/calamares
 sudo rm $debianRootfsPath/etc/apt/sources.list.d/debian.list -rf
 sudo rm $debianRootfsPath/etc/apt/sources.list.d/debian-backports.list -rf
