@@ -102,7 +102,8 @@ if [[ $1 == loong64 ]]; then
 elif [[ $1 == amd64 ]];then
     installWithAptss install firefox-spark -y
 else 
-    installWithAptss install chromium chromium-l10n -y
+    #installWithAptss install chromium chromium-l10n -y
+    installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
 fi
 #if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
 #    installWithAptss install spark-box64 -y
@@ -120,7 +121,7 @@ if [[ $1 != amd64 ]]; then
 fi
 chrootCommand apt install linux-kernel-gxde-$1 -y
 # 如果为 amd64/i386 则同时安装 oldstable 内核
-if [[ $1 == amd64 ]] || [[ $1 == i386 ]]; then
+if [[ $1 == amd64 ]] || [[ $1 == i386 ]] || [[ $1 == mips64el ]]; then
     installWithAptss install linux-kernel-oldstable-gxde-$1 -y
 fi
 installWithAptss install linux-firmware -y
