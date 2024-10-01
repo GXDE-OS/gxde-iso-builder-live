@@ -158,7 +158,7 @@ UNMount $debianRootfsPath
 cd $debianRootfsPath
 set -e
 sudo rm -rf ../filesystem.squashfs
-sudo mksquashfs * ../filesystem.squashfs -comp xz -Xbcj x86,arm
+sudo mksquashfs * ../filesystem.squashfs
 cd ..
 #du -h filesystem.squashfs
 # 构建 ISO
