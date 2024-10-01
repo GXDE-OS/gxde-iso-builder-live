@@ -84,6 +84,7 @@ if [[ $2 == "unstable" ]]; then
     chrootCommand apt update
 fi
 chrootCommand apt install aptss -y
+chrootCommand aptss update
 installWithAptss install gxde-desktop calamares-settings-gxde --install-recommends -y
 sudo rm -rf $debianRootfsPath/var/lib/dpkg/info/plymouth-theme-gxde-logo.postinst
 installWithAptss install live-task-recommended live-task-standard live-config-systemd \
@@ -98,9 +99,9 @@ installWithAptss update
 #installWithAptss install spark-deepin-wine-runner -y
 installWithAptss full-upgrade -y
 if [[ $1 == loong64 ]]; then
-    installWithAptss install cn.loongnix.lbrowser -y
+    chrootCommand aptss install cn.loongnix.lbrowser -y
 elif [[ $1 == amd64 ]];then
-    installWithAptss install firefox-spark -y
+    chrootCommand aptss install firefox-spark -y
 else 
     #installWithAptss install chromium chromium-l10n -y
     installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
