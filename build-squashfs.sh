@@ -96,7 +96,7 @@ chrootCommand apt install spark-store -y
 fi
 
 installWithAptss update
-#installWithAptss install spark-deepin-wine-runner -y
+
 installWithAptss full-upgrade -y
 if [[ $1 == loong64 ]]; then
     chrootCommand aptss install cn.loongnix.lbrowser -y
@@ -115,7 +115,7 @@ chrootCommand apt install network-manager-gnome -y
 #    chrootCommand apt install grub-efi-$1 -y
 #fi
 # 卸载无用应用
-chrootCommand apt purge mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings -y
+chrootCommand dpkg -r  mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings deepin-wine8-stable  -y
 # 安装内核
 if [[ $1 != amd64 ]]; then
     chrootCommand apt autopurge "linux-image-*" "linux-headers-*" -y
