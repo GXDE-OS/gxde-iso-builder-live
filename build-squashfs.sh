@@ -39,7 +39,7 @@ debianRootfsPath=debian-rootfs
 if [[ $1 == "" ]]; then
     echo 请指定架构：i386 amd64 arm64 mips64el loong64
     echo 还可以再加一个参数：unstable 以构建内测镜像
-    echo 如 $0  amd64 [aptss(可选)] unstable
+    echo "如 $0  amd64 [aptss(可选)] unstable"
     exit 1
 fi
 if [[ -d $debianRootfsPath ]]; then
