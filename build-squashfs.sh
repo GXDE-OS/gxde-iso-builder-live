@@ -100,8 +100,8 @@ installWithAptss update
 installWithAptss full-upgrade -y
 if [[ $1 == loong64 ]]; then
     chrootCommand aptss install cn.loongnix.lbrowser -y
-elif [[ $1 == amd64 ]];then
-    chrootCommand aptss install firefox-spark -y
+elif [[ $1 == amd64 ]] || [[ $1 == arm64 ]];then
+    chrootCommand aptss install firefox-spark spark-deepin-cloud-print  spark-deepin-cloud-scanner-y
 else 
     #installWithAptss install chromium chromium-l10n -y
     installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
@@ -109,18 +109,18 @@ fi
 #if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
 #    installWithAptss install spark-box64 -y
 #fi
-chrootCommand apt install network-manager-gnome -y
+installWithAptss install network-manager-gnome -y
 #chrootCommand apt install grub-efi-$1 -y
 #if [[ $1 != amd64 ]]; then
 #    chrootCommand apt install grub-efi-$1 -y
 #fi
 # 卸载无用应用
-chrootCommand apt remove  mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings deepin-wine8-stable  -y
+installWithAptss remove  mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings deepin-wine8-stable  -y
 # 安装内核
 if [[ $1 != amd64 ]]; then
-    chrootCommand apt autopurge "linux-image-*" "linux-headers-*" -y
+    installWithAptss autopurge "linux-image-*" "linux-headers-*" -y
 fi
-chrootCommand apt install linux-kernel-gxde-$1 -y
+installWithAptss install linux-kernel-gxde-$1 -y
 # 如果为 amd64/i386 则同时安装 oldstable 内核
 if [[ $1 == amd64 ]] || [[ $1 == i386 ]] || [[ $1 == mips64el ]]; then
     installWithAptss install linux-kernel-oldstable-gxde-$1 -y
