@@ -39,7 +39,7 @@ debianRootfsPath=debian-rootfs
 if [[ $1 == "" ]]; then
     echo 请指定架构：i386 amd64 arm64 mips64el loong64
     echo 还可以再加一个参数：unstable 以构建内测镜像
-    echo "如 $0  amd64 [aptss(可选)] unstable"
+    echo "如 $0  amd64  [unstable] [aptss(可选)] 顺序不能乱"
     exit 1
 fi
 if [[ -d $debianRootfsPath ]]; then
@@ -47,7 +47,7 @@ if [[ -d $debianRootfsPath ]]; then
     sudo rm -rf $debianRootfsPath
 fi
 export isUnAptss=1
-if [[ $1 == aptss ]] || [[ $2 == aptss ]]; then
+if [[ $1 == aptss ]] || [[ $2 == aptss ]]|| [[ $3 == aptss ]]; then
     export isUnAptss=0
 fi
 sudo rm -rf grub-deb
