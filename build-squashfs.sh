@@ -101,7 +101,7 @@ installWithAptss full-upgrade -y
 if [[ $1 == loong64 ]]; then
     chrootCommand aptss install cn.loongnix.lbrowser -y
 elif [[ $1 == amd64 ]] || [[ $1 == arm64 ]];then
-    chrootCommand aptss install firefox-spark spark-deepin-cloud-print  spark-deepin-cloud-scanner-y
+    chrootCommand aptss install firefox-spark -y
 else 
     #installWithAptss install chromium chromium-l10n -y
     installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
