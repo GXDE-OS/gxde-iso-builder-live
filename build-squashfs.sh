@@ -75,6 +75,7 @@ sudo sed -i "s/main/main contrib non-free non-free-firmware/g" $debianRootfsPath
 sudo cp $programPath/gxde-temp.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
 set +e
 # 安装应用
+
 sudo $programPath/pardus-chroot $debianRootfsPath
 chrootCommand apt install debian-ports-archive-keyring -y
 chrootCommand apt install debian-archive-keyring -y
@@ -85,12 +86,14 @@ if [[ $2 == "unstable" ]]; then
 fi
 chrootCommand apt install aptss -y
 chrootCommand aptss update
+
+# 
 installWithAptss install gxde-desktop calamares-settings-gxde --install-recommends -y
 sudo rm -rf $debianRootfsPath/var/lib/dpkg/info/plymouth-theme-gxde-logo.postinst
 installWithAptss install live-task-recommended live-task-standard live-config-systemd \
     live-boot -y
 installWithAptss install fcitx5-pinyin libudisks2-qt5-0 fcitx5 -y
-
+# 
 if [[ $1 != i386 ]]; then
 chrootCommand apt install spark-store -y
 fi
@@ -100,8 +103,13 @@ installWithAptss update
 installWithAptss full-upgrade -y
 if [[ $1 == loong64 ]]; then
     chrootCommand aptss install cn.loongnix.lbrowser -y
-elif [[ $1 == amd64 ]] || [[ $1 == arm64 ]];then
+elif [[ $1 == amd64 ]];then
     chrootCommand aptss install firefox-spark -y
+    chrootCommand aptss install spark-deepin-cloud-print spark-deepin-cloud-scanner -y
+    installWithAptss install dummyapp-wps-office dummyapp-spark-deepin-wine-runner -y
+elif [[ $1 == arm64 ]];then
+    chrootCommand aptss install firefox-spark -y
+    installWithAptss install dummyapp-wps-office dummyapp-spark-deepin-wine-runner -y
 else 
     #installWithAptss install chromium chromium-l10n -y
     installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
