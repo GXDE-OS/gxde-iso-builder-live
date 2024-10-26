@@ -71,6 +71,7 @@ else
     #sudo cp $programPath/debian-backports.list $debianRootfsPath/etc/apt/sources.list.d/debian-backports.list -v
     sudo cp $programPath/99bookworm-backports $debianRootfsPath/etc/apt/preferences.d/ -v
 fi
+sudo cp $programPath/os-release $debianRootfsPath/usr/lib/os-release
 sudo sed -i "s/main/main contrib non-free non-free-firmware/g" $debianRootfsPath/etc/apt/sources.list
 sudo cp $programPath/gxde-temp.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
 set +e
