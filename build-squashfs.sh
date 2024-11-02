@@ -89,14 +89,26 @@ chrootCommand apt install aptss -y
 chrootCommand aptss update
 
 # 
-installWithAptss install gxde-desktop calamares-settings-gxde --install-recommends -y
+installWithAptss install gxde-desktop --install-recommends -y
+if [[ $1 != "mips64el" ]]; then
+    installWithAptss install calamares-settings-gxde --install-recommends -y
+else
+    installWithAptss install gxde-installer --install-recommends -y
+fi
+
 sudo rm -rf $debianRootfsPath/var/lib/dpkg/info/plymouth-theme-gxde-logo.postinst
 installWithAptss install live-task-recommended live-task-standard live-config-systemd \
     live-boot -y
 installWithAptss install fcitx5-pinyin libudisks2-qt5-0 fcitx5 -y
 # 
-if [[ $1 != i386 ]]; then
-chrootCommand apt install spark-store -y
+if [[ $1 != "i386" ]]; then
+    chrootCommand apt install spark-store -y
+else
+    if [[ $1 == "mips64el" ]]; then
+        chrootCommand apt install loongsonapplication -y
+    else
+        chrootCommand apt install aptss -y
+    fi
 fi
 
 installWithAptss update
