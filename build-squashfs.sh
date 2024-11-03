@@ -80,10 +80,10 @@ set +e
 sudo $programPath/pardus-chroot $debianRootfsPath
 chrootCommand apt install debian-ports-archive-keyring -y
 chrootCommand apt install debian-archive-keyring -y
-chrootCommand apt update
+chrootCommand apt update -o Acquire::Check-Valid-Until=false
 if [[ $2 == "unstable" ]]; then
     chrootCommand apt install gxde-testing-source -y
-    chrootCommand apt update
+    chrootCommand apt update -o Acquire::Check-Valid-Until=false
 fi
 chrootCommand apt install aptss -y
 chrootCommand aptss update
