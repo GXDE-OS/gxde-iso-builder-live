@@ -57,7 +57,7 @@ sudo apt install debootstrap debian-archive-keyring \
 # 构建核心系统
 set -e
 if [[ $1 == loong64 ]]; then
-    sudo debootstrap --no-check-gpg --keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg --arch $1 unstable $debianRootfsPath https://mirror.sjtu.edu.cn/debian-ports/
+    sudo debootstrap --no-check-gpg --keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg --arch $1 unstable $debianRootfsPath https://packages.gxde.org/debian-loong64/
 else
     sudo debootstrap --arch $1 bookworm $debianRootfsPath https://mirrors.tuna.tsinghua.edu.cn/debian/
 fi
