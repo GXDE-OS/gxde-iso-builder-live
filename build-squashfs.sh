@@ -86,7 +86,7 @@ if [[ $2 == "unstable" ]]; then
     chrootCommand apt update -o Acquire::Check-Valid-Until=false
 fi
 chrootCommand apt install aptss -y
-chrootCommand aptss update
+chrootCommand aptss update -o Acquire::Check-Valid-Until=false
 
 # 
 installWithAptss install gxde-desktop --install-recommends -y
@@ -111,7 +111,7 @@ else
     fi
 fi
 
-installWithAptss update
+installWithAptss update -o Acquire::Check-Valid-Until=false
 
 installWithAptss full-upgrade -y
 if [[ $1 == loong64 ]]; then
