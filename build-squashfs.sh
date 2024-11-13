@@ -59,7 +59,7 @@ set -e
 if [[ $1 == loong64 ]]; then
     sudo debootstrap --no-check-gpg --keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg \
     --include=debian-ports-archive-keyring,debian-archive-keyring,live-task-recommended,live-task-standard,live-config-systemd,live-boot \
-    --arch $1 unstable $debianRootfsPath https://packages.gxde.org/debian-loong64/
+    --arch $1 unstable $debianRootfsPath https://mirror.sjtu.edu.cn/debian-ports/
 else
     sudo debootstrap --arch $1 \
     --include=debian-ports-archive-keyring,debian-archive-keyring,live-task-recommended,live-task-standard,live-config-systemd,live-boot \
