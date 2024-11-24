@@ -58,12 +58,12 @@ sudo apt install debootstrap debian-archive-keyring \
 set -e
 if [[ $1 == loong64 ]]; then
     sudo debootstrap --no-check-gpg --keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg \
-    --include=debian-ports-archive-keyring,debian-archive-keyring,live-task-recommended,live-task-standard,live-config-systemd,live-boot \
+    --include=debian-ports-archive-keyring,debian-archive-keyring,sudo \
     --arch $1 unstable $debianRootfsPath https://mirror.sjtu.edu.cn/debian-ports/
 else
     sudo debootstrap --arch $1 \
-    --include=debian-ports-archive-keyring,debian-archive-keyring,live-task-recommended,live-task-standard,live-config-systemd,live-boot \
-    bookworm $debianRootfsPath https://mirrors.tuna.tsinghua.edu.cn/debian/
+    --include=debian-ports-archive-keyring,debian-archive-keyring,sudo \
+    bookworm $debianRootfsPath https://mirrors.sdu.edu.cn/debian/
 fi
 # 修改系统主机名
 echo "gxde-os" | sudo tee $debianRootfsPath/etc/hostname
