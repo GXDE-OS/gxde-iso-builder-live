@@ -8,3 +8,5 @@ Usage: ./build-squashfs.sh -h
 同时支持使用 qemu-user-static + binfmt-support 跨架构生成 ISO  
 目前支持 amd64、arm64 安装镜像的构建  
 同时也会安装常用的应用，并对生成的 rootfs 进行调优以获得更好的体验，包括但不限于设置国内镜像源、配置语言等等  
+
+飞腾专用包 需要改 内核 需要在打包之前 手动安装 键盘驱动
