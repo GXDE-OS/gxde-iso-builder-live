@@ -140,7 +140,7 @@ installWithAptss install network-manager-gnome -y
 #    chrootCommand apt install grub-efi-$1 -y
 #fi
 # 卸载无用应用
-installWithAptss remove  mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings deepin-wine8-stable  -y
+installWithAptss purge  mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings deepin-wine8-stable breeze-* -y
 # 安装内核
 if [[ $1 != amd64 ]]; then
     installWithAptss autopurge "linux-image-*" "linux-headers-*" -y
