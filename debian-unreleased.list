@@ -1,3 +1,1 @@
-#deb [trusted=true] https://packages.gxde.org/debian-loong64/ unstable main contrib non-free non-free-firmware
-#deb [trusted=true] https://packages.gxde.org/debian-loong64/ unreleased main contrib non-free non-free-firmware
-deb [trusted=true] https://deb.debian.org/debian-ports/ sid main contrib non-free non-free-firmware
+deb [trusted=true] https://mirror.sjtu.edu.cn/debian-ports/ sid main contrib non-free non-free-firmware
