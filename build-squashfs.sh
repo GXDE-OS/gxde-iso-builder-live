@@ -118,6 +118,9 @@ fi
 installWithAptss update -o Acquire::Check-Valid-Until=false
 
 installWithAptss full-upgrade -y
+
+installWithAptss install linglong-bin linglong-box -y
+
 if [[ $1 == loong64 ]]; then
     chrootCommand aptss install cn.loongnix.lbrowser -y
 elif [[ $1 == amd64 ]];then
