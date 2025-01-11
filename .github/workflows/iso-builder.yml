@@ -24,21 +24,18 @@ jobs:
           name: gxde-os-i386-tianlu
           path: gxde.iso
 
-      - name: Prepare SFTP Path
+      - name: Sourceforge Upload
+        env:
+          SourceforgeUser: ${{ secrets.SourceforgeUser }}
+          SourceforgePassword: ${{ secrets.SourceforgePassword }}
         run: |
-          mkdir -p tianlu/i386
-          cp gxde.iso tianlu/i386
-          echo "Building Time: $(date)" > tianlu/i386/README.md
+          sudo apt install sshpass rsync -y
+          echo "Building Time: $(date)" > README.md
+          mkdir -p ~/.ssh/
+          ssh-keyscan -H frs.sourceforge.net >> ~/.ssh/known_hosts
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/i386
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/i386
 
-      - name: SFTP upload
-        uses: Dylan700/sftp-upload-action@latest
-        with:
-          server: frs.sourceforge.net
-          username: ${{ secrets.SourceforgeUser }}
-          password: ${{ secrets.SourceforgePassword }}
-          port: 22
-          uploads: |
-            tianlu => /home/frs/project/gxde-os-daily/
   
   amd64:
     runs-on: ubuntu-24.04
@@ -56,21 +53,17 @@ jobs:
           name: gxde-os-amd64-tianlu
           path: gxde.iso
 
-      - name: Prepare SFTP Path
+      - name: Sourceforge Upload
+        env:
+          SourceforgeUser: ${{ secrets.SourceforgeUser }}
+          SourceforgePassword: ${{ secrets.SourceforgePassword }}
         run: |
-          mkdir -p tianlu/amd64
-          cp gxde.iso tianlu/amd64
-          echo "Building Time: $(date)" > tianlu/amd64/README.md
-
-      - name: SFTP upload
-        uses: Dylan700/sftp-upload-action@latest
-        with:
-          server: frs.sourceforge.net
-          username: ${{ secrets.SourceforgeUser }}
-          password: ${{ secrets.SourceforgePassword }}
-          port: 22
-          uploads: |
-            tianlu => /home/frs/project/gxde-os-daily/
+          sudo apt install sshpass rsync -y
+          echo "Building Time: $(date)" > README.md
+          mkdir -p ~/.ssh/
+          ssh-keyscan -H frs.sourceforge.net >> ~/.ssh/known_hosts
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/amd64
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/amd64
 
   arm64:
     runs-on: ubuntu-24.04
@@ -88,21 +81,17 @@ jobs:
           name: gxde-os-arm64-tianlu
           path: gxde.iso
 
-      - name: Prepare SFTP Path
+      - name: Sourceforge Upload
+        env:
+          SourceforgeUser: ${{ secrets.SourceforgeUser }}
+          SourceforgePassword: ${{ secrets.SourceforgePassword }}
         run: |
-          mkdir -p tianlu/arm64
-          cp gxde.iso tianlu/arm64
-          echo "Building Time: $(date)" > tianlu/arm64/README.md
-
-      - name: SFTP upload
-        uses: Dylan700/sftp-upload-action@latest
-        with:
-          server: frs.sourceforge.net
-          username: ${{ secrets.SourceforgeUser }}
-          password: ${{ secrets.SourceforgePassword }}
-          port: 22
-          uploads: |
-            tianlu => /home/frs/project/gxde-os-daily/
+          sudo apt install sshpass rsync -y
+          echo "Building Time: $(date)" > README.md
+          mkdir -p ~/.ssh/
+          ssh-keyscan -H frs.sourceforge.net >> ~/.ssh/known_hosts
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/arm64
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/arm64
 
   loong64:
     runs-on: ubuntu-24.04
@@ -125,21 +114,17 @@ jobs:
           name: gxde-os-loong64-tianlu
           path: gxde.iso
 
-      - name: Prepare SFTP Path
+      - name: Sourceforge Upload
+        env:
+          SourceforgeUser: ${{ secrets.SourceforgeUser }}
+          SourceforgePassword: ${{ secrets.SourceforgePassword }}
         run: |
-          mkdir -p tianlu/loong64
-          cp gxde.iso tianlu/loong64
-          echo "Building Time: $(date)" > tianlu/loong64/README.md
-
-      - name: SFTP upload
-        uses: Dylan700/sftp-upload-action@latest
-        with:
-          server: frs.sourceforge.net
-          username: ${{ secrets.SourceforgeUser }}
-          password: ${{ secrets.SourceforgePassword }}
-          port: 22
-          uploads: |
-            tianlu => /home/frs/project/gxde-os-daily/
+          sudo apt install sshpass rsync -y
+          echo "Building Time: $(date)" > README.md
+          mkdir -p ~/.ssh/
+          ssh-keyscan -H frs.sourceforge.net >> ~/.ssh/known_hosts
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/loong64
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/loong64
 
 
 
