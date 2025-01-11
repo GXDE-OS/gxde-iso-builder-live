@@ -1,12 +1,15 @@
-name: Building ISO (tianlu)
-run-name: Building ISO (tianlu)
+name: Building ISO (tianlu, daily)
+run-name: Building ISO (tianlu, daily)
 
 on:
   workflow_dispatch:
+  push:
+  schedule:
+    - cron: '45 05 * * *'
 
 jobs:
   i386:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -20,9 +23,25 @@ jobs:
         with:
           name: gxde-os-i386-tianlu
           path: gxde.iso
+
+      - name: Prepare SFTP Path
+        run: |
+          mkdir -p tianlu/i386
+          cp gxde.iso tianlu/i386
+          echo "Building Time: $(date)" > tianlu/i386/README.md
+
+      - name: SFTP upload
+        uses: Dylan700/sftp-upload-action@latest
+        with:
+          server: frs.sourceforge.net
+          username: ${{ secrets.SourceforgeUser }}
+          password: ${{ secrets.SourceforgePassword }}
+          port: 22
+          uploads: |
+            tianlu => /home/frs/project/gxde-os-daily/
   
   amd64:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -37,8 +56,24 @@ jobs:
           name: gxde-os-amd64-tianlu
           path: gxde.iso
 
+      - name: Prepare SFTP Path
+        run: |
+          mkdir -p tianlu/amd64
+          cp gxde.iso tianlu/amd64
+          echo "Building Time: $(date)" > tianlu/amd64/README.md
+
+      - name: SFTP upload
+        uses: Dylan700/sftp-upload-action@latest
+        with:
+          server: frs.sourceforge.net
+          username: ${{ secrets.SourceforgeUser }}
+          password: ${{ secrets.SourceforgePassword }}
+          port: 22
+          uploads: |
+            tianlu => /home/frs/project/gxde-os-daily/
+
   arm64:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -52,22 +87,22 @@ jobs:
         with:
           name: gxde-os-arm64-tianlu
           path: gxde.iso
-        
-  mips64el:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
 
-      - name: Building
+      - name: Prepare SFTP Path
         run: |
-          sudo bash build-squashfs.sh mips64el unstable unaptss
+          mkdir -p tianlu/arm64
+          cp gxde.iso tianlu/arm64
+          echo "Building Time: $(date)" > tianlu/arm64/README.md
 
-      - name: upload result
-        uses: actions/upload-artifact@v4
+      - name: SFTP upload
+        uses: Dylan700/sftp-upload-action@latest
         with:
-          name: gxde-os-mips64el-tianlu
-          path: gxde.iso
+          server: frs.sourceforge.net
+          username: ${{ secrets.SourceforgeUser }}
+          password: ${{ secrets.SourceforgePassword }}
+          port: 22
+          uploads: |
+            tianlu => /home/frs/project/gxde-os-daily/
 
   loong64:
     runs-on: ubuntu-24.04
@@ -89,6 +124,22 @@ jobs:
         with:
           name: gxde-os-loong64-tianlu
           path: gxde.iso
+
+      - name: Prepare SFTP Path
+        run: |
+          mkdir -p tianlu/loong64
+          cp gxde.iso tianlu/loong64
+          echo "Building Time: $(date)" > tianlu/loong64/README.md
+
+      - name: SFTP upload
+        uses: Dylan700/sftp-upload-action@latest
+        with:
+          server: frs.sourceforge.net
+          username: ${{ secrets.SourceforgeUser }}
+          password: ${{ secrets.SourceforgePassword }}
+          port: 22
+          uploads: |
+            tianlu => /home/frs/project/gxde-os-daily/
 
 
 

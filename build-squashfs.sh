@@ -105,15 +105,6 @@ installWithAptss install live-task-recommended live-task-standard live-config-sy
     live-boot -y
 installWithAptss install  fcitx5-frontend-all fcitx5-pinyin libudisks2-qt5-0 fcitx5 -y
 # 
-if [[ $1 != "i386" ]]; then
-    chrootCommand apt install spark-store -y
-else
-    if [[ $1 == "mips64el" ]]; then
-        chrootCommand apt install loongsonapplication -y
-    else
-        chrootCommand apt install aptss -y
-    fi
-fi
 
 installWithAptss update -o Acquire::Check-Valid-Until=false
 
@@ -122,16 +113,22 @@ installWithAptss full-upgrade -y
 installWithAptss install linglong-bin linglong-box -y
 
 if [[ $1 == loong64 ]]; then
+    chrootCommand apt install spark-store -y
     chrootCommand aptss install cn.loongnix.lbrowser -y
-elif [[ $1 == amd64 ]];then
+elif [[ $1 == amd64 ]]; then
+    chrootCommand apt install spark-store -y
     chrootCommand aptss install firefox-spark -y
     chrootCommand aptss install spark-deepin-cloud-print spark-deepin-cloud-scanner -y
     installWithAptss install dummyapp-wps-office dummyapp-spark-deepin-wine-runner -y
-elif [[ $1 == arm64 ]];then
+elif [[ $1 == arm64 ]]; then
+    chrootCommand apt install spark-store -y
     chrootCommand aptss install firefox-spark -y
     installWithAptss install dummyapp-wps-office dummyapp-spark-deepin-wine-runner -y
+elif [[ $1 == "mips64el" ]]; then
+    chrootCommand apt install loongsonapplication -y
+    installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
 else 
-    #installWithAptss install chromium chromium-l10n -y
+    chrootCommand apt install aptss -y
     installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
 fi
 #if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
