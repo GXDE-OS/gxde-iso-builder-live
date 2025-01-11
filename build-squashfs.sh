@@ -114,14 +114,17 @@ installWithAptss install linglong-bin linglong-box -y
 
 if [[ $1 == loong64 ]]; then
     chrootCommand apt install spark-store -y
+    installWithAptss update -o Acquire::Check-Valid-Until=false
     chrootCommand aptss install cn.loongnix.lbrowser -y
 elif [[ $1 == amd64 ]]; then
     chrootCommand apt install spark-store -y
+    installWithAptss update -o Acquire::Check-Valid-Until=false
     chrootCommand aptss install firefox-spark -y
     chrootCommand aptss install spark-deepin-cloud-print spark-deepin-cloud-scanner -y
     installWithAptss install dummyapp-wps-office dummyapp-spark-deepin-wine-runner -y
 elif [[ $1 == arm64 ]]; then
     chrootCommand apt install spark-store -y
+    installWithAptss update -o Acquire::Check-Valid-Until=false
     chrootCommand aptss install firefox-spark -y
     installWithAptss install dummyapp-wps-office dummyapp-spark-deepin-wine-runner -y
 elif [[ $1 == "mips64el" ]]; then
@@ -129,6 +132,7 @@ elif [[ $1 == "mips64el" ]]; then
     installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
 else 
     chrootCommand apt install aptss -y
+    installWithAptss update -o Acquire::Check-Valid-Until=false
     installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
 fi
 #if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
