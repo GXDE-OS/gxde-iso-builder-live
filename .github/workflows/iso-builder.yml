@@ -17,12 +17,13 @@ jobs:
       - name: Building
         run: |
           sudo bash build-squashfs.sh i386 unstable unaptss
+          mv gxde.iso gxde-os-i386-tianlu.iso
 
       - name: upload result
         uses: actions/upload-artifact@v4
         with:
           name: gxde-os-i386-tianlu
-          path: gxde.iso
+          path: gxde-os-i386-tianlu.iso
 
       - name: Sourceforge Upload
         env:
@@ -33,7 +34,7 @@ jobs:
           echo "Building Time: $(date)" > README.md
           mkdir -p ~/.ssh/
           ssh-keyscan -H frs.sourceforge.net >> ~/.ssh/known_hosts
-          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/i386
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-i386-tianlu.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/i386
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/i386
 
   
@@ -46,12 +47,13 @@ jobs:
       - name: Building
         run: |
           sudo bash build-squashfs.sh amd64 unstable unaptss
+          mv gxde.iso gxde-os-amd64-tianlu.iso
 
       - name: upload result
         uses: actions/upload-artifact@v4
         with:
           name: gxde-os-amd64-tianlu
-          path: gxde.iso
+          path: gxde-os-amd64-tianlu.iso
 
       - name: Sourceforge Upload
         env:
@@ -62,7 +64,7 @@ jobs:
           echo "Building Time: $(date)" > README.md
           mkdir -p ~/.ssh/
           ssh-keyscan -H frs.sourceforge.net >> ~/.ssh/known_hosts
-          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/amd64
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-amd64-tianlu.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/amd64
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/amd64
 
   arm64:
@@ -74,12 +76,13 @@ jobs:
       - name: Building
         run: |
           sudo bash build-squashfs.sh arm64 unstable unaptss
+          mv gxde.iso gxde-os-arm64-tianlu.iso
 
       - name: upload result
         uses: actions/upload-artifact@v4
         with:
           name: gxde-os-arm64-tianlu
-          path: gxde.iso
+          path: gxde-os-arm64-tianlu.iso
 
       - name: Sourceforge Upload
         env:
@@ -90,8 +93,37 @@ jobs:
           echo "Building Time: $(date)" > README.md
           mkdir -p ~/.ssh/
           ssh-keyscan -H frs.sourceforge.net >> ~/.ssh/known_hosts
-          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/arm64
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-arm64-tianlu.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/arm64
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/arm64
+
+  mips64el:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Building
+        run: |
+          sudo bash build-squashfs.sh mips64el unstable unaptss
+          mv gxde.iso gxde-os-mips64el-tianlu.iso
+
+      - name: upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: gxde-os-mips64el-tianlu
+          path: gxde-os-mips64el-tianlu.iso
+
+      - name: Sourceforge Upload
+        env:
+          SourceforgeUser: ${{ secrets.SourceforgeUser }}
+          SourceforgePassword: ${{ secrets.SourceforgePassword }}
+        run: |
+          sudo apt install sshpass rsync -y
+          echo "Building Time: $(date)" > README.md
+          mkdir -p ~/.ssh/
+          ssh-keyscan -H frs.sourceforge.net >> ~/.ssh/known_hosts
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-mips64el-tianlu.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/mips64el
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/mips64el
 
   loong64:
     runs-on: ubuntu-24.04
@@ -107,12 +139,13 @@ jobs:
       - name: Building
         run: |
           sudo bash build-squashfs.sh loong64 unstable unaptss
+          mv gxde.iso gxde-os-loong64-tianlu.iso
 
       - name: upload result
         uses: actions/upload-artifact@v4
         with:
           name: gxde-os-loong64-tianlu
-          path: gxde.iso
+          path: gxde-os-loong64-tianlu.iso
 
       - name: Sourceforge Upload
         env:
@@ -123,7 +156,7 @@ jobs:
           echo "Building Time: $(date)" > README.md
           mkdir -p ~/.ssh/
           ssh-keyscan -H frs.sourceforge.net >> ~/.ssh/known_hosts
-          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/loong64
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-loong64-tianlu.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/loong64
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/loong64
 
 
