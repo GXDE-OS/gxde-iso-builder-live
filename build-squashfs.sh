@@ -60,6 +60,13 @@ if [[ $1 == loong64 ]]; then
     sudo debootstrap --no-check-gpg --keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg \
     --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
     --arch $1 unstable $debianRootfsPath https://mirror.sjtu.edu.cn/debian-ports/
+    if [[ $? != 0 ]]; then
+        sudo apt install squashfs-tools git aria2 -y
+        aria2c -x 16 -s 16 https://repo.gxde.top/TGZ/debian-base-loong64/debian-base-loong64.squashfs
+        sudo unsquashfs debian-base-loong64.squashfs
+        sudo rm -rf $debianRootfsPath/
+        sudo mv squashfs-root $debianRootfsPath -v
+    fi
 else
     sudo debootstrap --arch $1 \
     --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
@@ -83,7 +90,7 @@ set +e
 
 sudo $programPath/pardus-chroot $debianRootfsPath
 chrootCommand apt install debian-ports-archive-keyring -y
-chrootCommand apt install debian-archive-keyring -y
+chrootCommand apt install debian-archive-keyring sudo vim -y
 chrootCommand apt update -o Acquire::Check-Valid-Until=false
 if [[ $2 == "unstable" ]]; then
     chrootCommand apt install gxde-testing-source -y
