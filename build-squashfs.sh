@@ -55,7 +55,7 @@ sudo apt install debootstrap debian-archive-keyring \
     debian-ports-archive-keyring qemu-user-static genisoimage \
     squashfs-tools -y
 # 构建核心系统
-set -e
+set +e
 if [[ $1 == loong64 ]]; then
     sudo debootstrap --no-check-gpg --keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg \
     --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
