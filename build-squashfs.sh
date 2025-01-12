@@ -63,7 +63,7 @@ if [[ $1 == loong64 ]]; then
 else
     sudo debootstrap --arch $1 \
     --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
-    bookworm $debianRootfsPath https://mirrors.sdu.edu.cn/debian/
+    bookworm $debianRootfsPath https://mirror.sjtu.edu.cn/debian/
 fi
 # 修改系统主机名
 echo "gxde-os" | sudo tee $debianRootfsPath/etc/hostname
