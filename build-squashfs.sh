@@ -73,7 +73,7 @@ sudo apt install debootstrap debian-archive-keyring \
     debian-ports-archive-keyring qemu-user-static genisoimage \
     squashfs-tools -y
 # 构建核心系统
-set -e
+set +e
 case $2 in
     "tianlu")
         buildDebianRootf $1
