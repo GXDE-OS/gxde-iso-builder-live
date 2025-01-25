@@ -34,12 +34,30 @@ function UNMount() {
     sudo umount "$1/proc"
     sudo umount "$1/tmp"
 }
+function buildDebianRootf() {
+    if [[ $1 == loong64 ]]; then
+        sudo debootstrap --no-check-gpg --keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg \
+            --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
+            --arch $1 unstable $debianRootfsPath https://mirror.sjtu.edu.cn/debian-ports/
+        if [[ $? != 0 ]]; then
+            sudo apt install squashfs-tools git aria2 -y
+            aria2c -x 16 -s 16 https://repo.gxde.top/TGZ/debian-base-loong64/debian-base-loong64.squashfs
+            sudo unsquashfs debian-base-loong64.squashfs
+            sudo rm -rf $debianRootfsPath/
+            sudo mv squashfs-root $debianRootfsPath -v
+        fi
+    else
+        sudo debootstrap --arch $1 \
+            --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
+            bookworm $debianRootfsPath https://mirror.sjtu.edu.cn/debian/
+    fi
+}
 programPath=$(cd $(dirname $0); pwd)
 debianRootfsPath=debian-rootfs
 if [[ $1 == "" ]]; then
     echo 请指定架构：i386 amd64 arm64 mips64el loong64
-    echo 还可以再加一个参数：unstable 以构建内测镜像
-    echo "如 $0  amd64  [unstable] [aptss(可选)] 顺序不能乱"
+    echo 还可以代号以构建内测镜像
+    echo "如 $0  amd64  [tianlu] [aptss(可选)] 顺序不能乱"
     exit 1
 fi
 if [[ -d $debianRootfsPath ]]; then
@@ -56,22 +74,26 @@ sudo apt install debootstrap debian-archive-keyring \
     squashfs-tools -y
 # 构建核心系统
 set -e
-if [[ $1 == loong64 ]]; then
-    sudo debootstrap --no-check-gpg --keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg \
-    --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
-    --arch $1 unstable $debianRootfsPath https://mirror.sjtu.edu.cn/debian-ports/
-    if [[ $? != 0 ]]; then
-        sudo apt install squashfs-tools git aria2 -y
-        aria2c -x 16 -s 16 https://repo.gxde.top/TGZ/debian-base-loong64/debian-base-loong64.squashfs
-        sudo unsquashfs debian-base-loong64.squashfs
-        sudo rm -rf $debianRootfsPath/
-        sudo mv squashfs-root $debianRootfsPath -v
-    fi
-else
-    sudo debootstrap --arch $1 \
-    --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
-    bookworm $debianRootfsPath https://mirror.sjtu.edu.cn/debian/
-fi
+case $2 in
+    "tianlu")
+        buildDebianRootf $1
+    ;;
+    "bixie")
+        buildDebianRootf $1
+    ;;
+    "meimei")
+        if [[ ! -e /usr/share/debootstrap/scripts/loongnix ]]; then
+            sudo cp loongnix /usr/share/debootstrap/scripts/ -v
+        fi
+        sudo debootstrap --no-check-gpg --arch $1 \
+            --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
+            loongnix $debianRootfsPath https://pkg.loongnix.cn/loongnix/25
+    ;;
+    *)
+        buildDebianRootf $1
+    ;;
+esac
+
 # 修改系统主机名
 echo "gxde-os" | sudo tee $debianRootfsPath/etc/hostname
 # 写入源
@@ -92,7 +114,7 @@ sudo $programPath/pardus-chroot $debianRootfsPath
 chrootCommand apt install debian-ports-archive-keyring -y
 chrootCommand apt install debian-archive-keyring sudo vim -y
 chrootCommand apt update -o Acquire::Check-Valid-Until=false
-if [[ $2 == "unstable" ]]; then
+if [[ $2 == "tianlu" ]]; then
     chrootCommand apt install gxde-testing-source -y
     chrootCommand apt update -o Acquire::Check-Valid-Until=false
 fi
