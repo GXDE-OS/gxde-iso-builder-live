@@ -97,12 +97,14 @@ esac
 # 修改系统主机名
 echo "gxde-os" | sudo tee $debianRootfsPath/etc/hostname
 # 写入源
-if [[ $1 == loong64 ]]; then
-    sudo cp $programPath/debian-unreleased.list $debianRootfsPath/etc/apt/sources.list -v
-else
-    sudo cp $programPath/debian.list $debianRootfsPath/etc/apt/sources.list -v
-    #sudo cp $programPath/debian-backports.list $debianRootfsPath/etc/apt/sources.list.d/debian-backports.list -v
-    sudo cp $programPath/99bookworm-backports $debianRootfsPath/etc/apt/preferences.d/ -v
+if [[ $2 == "" ]] || [[ $2 == "tianlu" ]] || [[ $2 == "bixie" ]]; then
+    if [[ $1 == loong64 ]]; then
+        sudo cp $programPath/debian-unreleased.list $debianRootfsPath/etc/apt/sources.list -v
+    else
+        sudo cp $programPath/debian.list $debianRootfsPath/etc/apt/sources.list -v
+        #sudo cp $programPath/debian-backports.list $debianRootfsPath/etc/apt/sources.list.d/debian-backports.list -v
+        sudo cp $programPath/99bookworm-backports $debianRootfsPath/etc/apt/preferences.d/ -v
+    fi
 fi
 sudo cp $programPath/os-release $debianRootfsPath/usr/lib/os-release
 sudo sed -i "s/main/main contrib non-free non-free-firmware/g" $debianRootfsPath/etc/apt/sources.list
