@@ -51,6 +51,7 @@ function buildDebianRootf() {
             --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
             bookworm $debianRootfsPath https://mirror.sjtu.edu.cn/debian/
     fi
+    sudo cp $programPath/gxde-temp-bixie.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
 }
 programPath=$(cd $(dirname $0); pwd)
 debianRootfsPath=debian-rootfs
@@ -88,6 +89,7 @@ case $2 in
         sudo debootstrap --no-check-gpg --arch $1 \
             --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
             loongnix $debianRootfsPath https://pkg.loongnix.cn/loongnix/25
+        sudo cp $programPath/gxde-temp-meimei.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
     ;;
     *)
         buildDebianRootf $1
@@ -108,7 +110,8 @@ if [[ $2 == "" ]] || [[ $2 == "tianlu" ]] || [[ $2 == "bixie" ]]; then
 fi
 sudo cp $programPath/os-release $debianRootfsPath/usr/lib/os-release
 sudo sed -i "s/main/main contrib non-free non-free-firmware/g" $debianRootfsPath/etc/apt/sources.list
-sudo cp $programPath/gxde-temp.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
+
+
 set +e
 # 安装应用
 
