@@ -125,7 +125,7 @@ jobs:
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-mips64el-tianlu.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/mips64el
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/mips64el
 
-  loong64:
+  loong64-debian-ports:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -160,6 +160,39 @@ jobs:
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/loong64
 
 
+  loong64-loongnix:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Config
+        run: |
+            sudo apt install debian-ports-archive-keyring debian-archive-keyring -y
+            sudo cp /usr/share/keyrings/debian-ports-archive-keyring.gpg /usr/share/keyrings/debian-archive-keyring.gpg -v
+
+      - name: Building
+        run: |
+          sudo bash build-squashfs.sh loong64 meimei unaptss
+          mv gxde.iso gxde-os-loong64-meimei.iso
+
+      - name: upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: gxde-os-loong64-meimei
+          path: gxde-os-loong64-meimei.iso
+
+      - name: Sourceforge Upload
+        env:
+          SourceforgeUser: ${{ secrets.SourceforgeUser }}
+          SourceforgePassword: ${{ secrets.SourceforgePassword }}
+        run: |
+          sudo apt install sshpass rsync -y
+          echo "Building Time: $(date)" > README.md
+          mkdir -p ~/.ssh/
+          ssh-keyscan -H frs.sourceforge.net >> ~/.ssh/known_hosts
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-loong64-meimei.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/meimei/loong64
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/loong64
 
 
 

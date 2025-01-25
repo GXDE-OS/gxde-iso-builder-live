@@ -183,6 +183,9 @@ installWithAptss install linux-kernel-gxde-$1 -y
 if [[ $1 == amd64 ]] || [[ $1 == i386 ]] || [[ $1 == mips64el ]]; then
     installWithAptss install linux-kernel-oldstable-gxde-$1 -y
 fi
+if [[ $1 == loong64 ]]; then
+    installWithAptss install linux-kernel-loongnix-gxde-loong64 -y
+fi
 #installWithAptss install linux-firmware -y
 installWithAptss install firmware-linux -y
 installWithAptss install firmware-iwlwifi firmware-realtek -y
