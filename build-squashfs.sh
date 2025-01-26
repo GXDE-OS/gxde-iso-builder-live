@@ -118,6 +118,8 @@ set +e
 sudo $programPath/pardus-chroot $debianRootfsPath
 chrootCommand apt install debian-ports-archive-keyring -y
 chrootCommand apt install debian-archive-keyring sudo vim -y
+chrootCommand apt install gxde-source -y
+chrootCommand rm -rfv /etc/apt/sources.list.d/temp.list
 chrootCommand apt update -o Acquire::Check-Valid-Until=false
 if [[ $2 == "tianlu" ]]; then
     chrootCommand apt install gxde-testing-source -y
