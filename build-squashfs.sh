@@ -116,6 +116,7 @@ set +e
 # 安装应用
 
 sudo $programPath/pardus-chroot $debianRootfsPath
+chrootCommand apt update -o Acquire::Check-Valid-Until=false
 chrootCommand apt install debian-ports-archive-keyring -y
 chrootCommand apt install debian-archive-keyring sudo vim -y
 chrootCommand apt install gxde-source -y
