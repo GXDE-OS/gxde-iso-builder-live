@@ -49,9 +49,8 @@ function buildDebianRootf() {
     else
         sudo debootstrap --arch $1 \
             --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
-            bookworm $debianRootfsPath https://mirror.sjtu.edu.cn/debian/
+            $2 $debianRootfsPath https://mirror.sjtu.edu.cn/debian/
     fi
-    sudo cp $programPath/gxde-temp-bixie.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
 }
 programPath=$(cd $(dirname $0); pwd)
 debianRootfsPath=debian-rootfs
@@ -77,10 +76,20 @@ sudo apt install debootstrap debian-archive-keyring \
 set +e
 case $2 in
     "tianlu")
-        buildDebianRootf $1
+        buildDebianRootf $1 bookworm
+        sudo cp $programPath/gxde-temp-bixie.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
     ;;
     "bixie")
-        buildDebianRootf $1
+        buildDebianRootf $1 bookworm
+        sudo cp $programPath/gxde-temp-bixie.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
+    ;;
+    "lizhi")
+        buildDebianRootf $1 trixie
+        sudo cp $programPath/gxde-temp-lizhi.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
+    ;;
+    "zhuangzhuang")
+        buildDebianRootf $1 trixie
+        sudo cp $programPath/gxde-temp-lizhi.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
     ;;
     "meimei")
         if [[ ! -e /usr/share/debootstrap/scripts/loongnix ]]; then
@@ -92,7 +101,8 @@ case $2 in
         sudo cp $programPath/gxde-temp-meimei.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
     ;;
     *)
-        buildDebianRootf $1
+        buildDebianRootf $1 bookworm
+        sudo cp $programPath/gxde-temp-bixie.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
     ;;
 esac
 

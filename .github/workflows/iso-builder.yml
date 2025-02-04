@@ -8,7 +8,7 @@ on:
     - cron: '45 05 * * *'
 
 jobs:
-  i386:
+  i386-tianlu:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -38,7 +38,7 @@ jobs:
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/i386
 
   
-  amd64:
+  amd64-tianlu:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -67,7 +67,7 @@ jobs:
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-amd64-tianlu.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/amd64
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/amd64
 
-  arm64:
+  arm64-tianlu:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -96,7 +96,7 @@ jobs:
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-arm64-tianlu.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/arm64
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/arm64
 
-  mips64el:
+  mips64el-tianlu:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -125,7 +125,7 @@ jobs:
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-mips64el-tianlu.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/mips64el
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/mips64el
 
-  loong64-debian-ports:
+  loong64-tianlu:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -160,7 +160,7 @@ jobs:
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/loong64
 
 
-  loong64-loongnix:
+  loong64-meimei:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -194,5 +194,89 @@ jobs:
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-loong64-meimei.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/meimei/loong64
           sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/tianlu/loong64
 
+  amd64-zhuangzhuang:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
 
+      - name: Building
+        run: |
+          sudo bash build-squashfs.sh amd64 zhuangzhuang unaptss
+          mv gxde.iso gxde-os-amd64-zhuangzhuang.iso
 
+      - name: upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: gxde-os-amd64-zhuangzhuang
+          path: gxde-os-amd64-zhuangzhuang.iso
+
+      - name: Sourceforge Upload
+        env:
+          SourceforgeUser: ${{ secrets.SourceforgeUser }}
+          SourceforgePassword: ${{ secrets.SourceforgePassword }}
+        run: |
+          sudo apt install sshpass rsync -y
+          echo "Building Time: $(date)" > README.md
+          mkdir -p ~/.ssh/
+          ssh-keyscan -H frs.sourceforge.net >> ~/.ssh/known_hosts
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-amd64-zhuangzhuang.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/zhuangzhuang/amd64
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/zhuangzhuang/amd64
+
+  arm64-zhuangzhuang:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Building
+        run: |
+          sudo bash build-squashfs.sh arm64 zhuangzhuang unaptss
+          mv gxde.iso gxde-os-arm64-zhuangzhuang.iso
+
+      - name: upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: gxde-os-arm64-zhuangzhuang
+          path: gxde-os-arm64-zhuangzhuang.iso
+
+      - name: Sourceforge Upload
+        env:
+          SourceforgeUser: ${{ secrets.SourceforgeUser }}
+          SourceforgePassword: ${{ secrets.SourceforgePassword }}
+        run: |
+          sudo apt install sshpass rsync -y
+          echo "Building Time: $(date)" > README.md
+          mkdir -p ~/.ssh/
+          ssh-keyscan -H frs.sourceforge.net >> ~/.ssh/known_hosts
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-arm64-zhuangzhuang.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/zhuangzhuang/arm64
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/zhuangzhuang/arm64
+
+  mips64el-zhuangzhuang:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Building
+        run: |
+          sudo bash build-squashfs.sh mips64el zhuangzhuang unaptss
+          mv gxde.iso gxde-os-mips64el-zhuangzhuang.iso
+
+      - name: upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: gxde-os-mips64el-zhuangzhuang
+          path: gxde-os-mips64el-zhuangzhuang.iso
+
+      - name: Sourceforge Upload
+        env:
+          SourceforgeUser: ${{ secrets.SourceforgeUser }}
+          SourceforgePassword: ${{ secrets.SourceforgePassword }}
+        run: |
+          sudo apt install sshpass rsync -y
+          echo "Building Time: $(date)" > README.md
+          mkdir -p ~/.ssh/
+          ssh-keyscan -H frs.sourceforge.net >> ~/.ssh/known_hosts
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh gxde-os-mips64el-zhuangzhuang.iso $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/zhuangzhuang/mips64el
+          sshpass -p "$SourceforgePassword" rsync -avP -e ssh README.md $SourceforgeUser@frs.sourceforge.net:/home/frs/project/gxde-os-daily/zhuangzhuang/mips64el
