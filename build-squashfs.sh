@@ -168,7 +168,7 @@ elif [[ $1 == amd64 ]]; then
     installWithAptss update -o Acquire::Check-Valid-Until=false
     chrootCommand aptss install firefox-spark -y
     chrootCommand aptss install spark-deepin-cloud-print spark-deepin-cloud-scanner -y
-    installWithAptss install dummyapp-wps-office dummyapp-spark-deepin-wine-runner -y
+    installWithAptss install dummyapp-wps-office dummyapp-spark-deepin-wine-runner boot-repair -y
 elif [[ $1 == arm64 ]]; then
     chrootCommand apt install spark-store -y
     installWithAptss update -o Acquire::Check-Valid-Until=false
@@ -177,6 +177,11 @@ elif [[ $1 == arm64 ]]; then
 elif [[ $1 == "mips64el" ]]; then
     chrootCommand apt install loongsonapplication -y
     installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
+elif [[ $1 == "i386" ]]; then
+    chrootCommand apt install aptss -y
+    installWithAptss update -o Acquire::Check-Valid-Until=false
+    installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
+    installWithAptss install dummyapp-spark-deepin-wine-runner boot-repair -y
 else 
     chrootCommand apt install aptss -y
     installWithAptss update -o Acquire::Check-Valid-Until=false
