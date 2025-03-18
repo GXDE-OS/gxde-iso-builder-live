@@ -217,11 +217,11 @@ installWithAptss install grub-common -y
 installWithAptss autopurge -y
 installWithAptss clean
 # 下载所需的安装包
-apt install grub-pc --download-only -y
-apt install grub-efi-$1 --download-only -y
-apt install grub-efi --download-only -y
-apt install grub-common --download-only -y
-apt install cryptsetup-initramfs cryptsetup keyutils --download-only -y
+chrootCommand apt install grub-pc --download-only -y
+chrootCommand apt install grub-efi-$1 --download-only -y
+chrootCommand apt install grub-efi --download-only -y
+chrootCommand apt install grub-common --download-only -y
+chrootCommand apt install cryptsetup-initramfs cryptsetup keyutils --download-only -y
 
 
 mkdir grub-deb
