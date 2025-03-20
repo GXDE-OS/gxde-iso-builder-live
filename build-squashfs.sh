@@ -212,6 +212,7 @@ fi
 #installWithAptss install linux-firmware -y
 installWithAptss install firmware-linux -y
 installWithAptss install firmware-iwlwifi firmware-realtek -y
+installWithAptss install firmware-sof-signed -y
 installWithAptss install grub-common -y
 # 清空临时文件
 installWithAptss autopurge -y
