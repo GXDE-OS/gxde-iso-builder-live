@@ -38,7 +38,7 @@ function buildDebianRootf() {
     if [[ $1 == loong64 ]]; then
         sudo debootstrap --no-check-gpg --keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg \
             --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
-            --arch $1 unstable $debianRootfsPath https://mirror.sjtu.edu.cn/debian-ports/
+            --arch $1 unstable $debianRootfsPath https://mirrors.nju.edu.cn/debian-ports/
         if [[ $? != 0 ]]; then
             sudo apt install squashfs-tools git aria2 -y
             aria2c -x 16 -s 16 https://repo.gxde.top/TGZ/debian-base-loong64/debian-base-loong64.squashfs
@@ -49,7 +49,7 @@ function buildDebianRootf() {
     else
         sudo debootstrap --arch $1 \
             --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
-            $2 $debianRootfsPath https://mirror.sjtu.edu.cn/debian/
+            $2 $debianRootfsPath https://mirrors.nju.edu.cn/debian/
     fi
 }
 programPath=$(cd $(dirname $0); pwd)
