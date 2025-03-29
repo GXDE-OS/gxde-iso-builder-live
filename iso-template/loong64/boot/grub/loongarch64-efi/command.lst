@@ -2,7 +2,6 @@
 *all_functional_test: functional_test
 *background_image: gfxterm_background
 *cat: cat
-*cmp: cmp
 *crc: hashsum
 *cryptomount: cryptodisk
 *echo: echo
@@ -23,7 +22,6 @@
 *lsacpi: lsacpi
 *md5sum: hashsum
 *menuentry: normal
-*plainmount: plainmount
 *probe: probe
 *read: read
 *read_byte: memrw
@@ -59,6 +57,7 @@ break: normal
 cat: minicmd
 chainloader: chain
 clear: normal
+cmp: cmp
 configfile: configfile
 continue: normal
 cutmem: mmap
@@ -93,7 +92,6 @@ mactelbless: macbless
 net_add_addr: net
 net_add_dns: net
 net_add_route: net
-net_bootp6: net
 net_bootp: net
 net_del_addr: net
 net_del_dns: net
