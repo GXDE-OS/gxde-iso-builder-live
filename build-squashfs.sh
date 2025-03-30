@@ -190,7 +190,6 @@ fi
 #if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
 #    installWithAptss install spark-box64 -y
 #fi
-installWithAptss install network-manager-gnome -y
 #chrootCommand apt install grub-efi-$1 -y
 #if [[ $1 != amd64 ]]; then
 #    chrootCommand apt install grub-efi-$1 -y
