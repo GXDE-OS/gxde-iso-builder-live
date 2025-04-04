@@ -208,6 +208,8 @@ fi
 if [[ $1 == loong64 ]]; then
     installWithAptss install linux-kernel-loongnix-gxde-loong64 -y
 fi
+# 禁用 nmbd
+chrootCommand systemctl disable nmbd
 #installWithAptss install linux-firmware -y
 installWithAptss install firmware-linux -y
 installWithAptss install firmware-iwlwifi firmware-realtek -y
