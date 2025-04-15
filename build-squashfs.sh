@@ -139,6 +139,7 @@ fi
 chrootCommand apt install aptss -y
 chrootCommand aptss update -o Acquire::Check-Valid-Until=false
 
+
 # 
 installWithAptss install gxde-desktop --install-recommends -y
 if [[ $1 != "mips64el" ]]; then
@@ -216,6 +217,7 @@ installWithAptss install firmware-iwlwifi firmware-realtek -y
 installWithAptss install firmware-sof-signed -y
 installWithAptss install grub-common -y
 # 清空临时文件
+installWithAptss autopurge fonts-noto-extra fonts-noto-ui-extra fonts-noto-cjk-extra -y
 installWithAptss autopurge -y
 installWithAptss clean
 # 下载所需的安装包
