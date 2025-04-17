@@ -49,7 +49,7 @@ function buildDebianRootf() {
     else
         sudo debootstrap --arch $1 \
             --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
-            $2 $debianRootfsPath https://mirrors.nju.edu.cn/debian/
+            $2 $debianRootfsPath https://mirrors.cernet.edu.cn/debian/
     fi
 }
 programPath=$(cd $(dirname $0); pwd)
