@@ -142,11 +142,11 @@ chrootCommand aptss update -o Acquire::Check-Valid-Until=false
 
 # 
 installWithAptss install gxde-desktop --install-recommends -y
-if [[ $1 != "mips64el" ]]; then
-    installWithAptss install calamares-settings-gxde --install-recommends -y
-else
-    installWithAptss install gxde-installer --install-recommends -y
-fi
+#if [[ $1 != "mips64el" ]]; then
+installWithAptss install calamares-settings-gxde --install-recommends -y
+#else
+#    installWithAptss install gxde-installer --install-recommends -y
+#fi
 
 sudo rm -rf $debianRootfsPath/var/lib/dpkg/info/plymouth-theme-gxde-logo.postinst
 installWithAptss install live-task-recommended live-task-standard live-config-systemd \
