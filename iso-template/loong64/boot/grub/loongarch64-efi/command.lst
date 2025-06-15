@@ -2,6 +2,7 @@
 *all_functional_test: functional_test
 *background_image: gfxterm_background
 *cat: cat
+*cmp: cmp
 *crc: hashsum
 *cryptomount: cryptodisk
 *echo: echo
@@ -22,6 +23,7 @@
 *lsacpi: lsacpi
 *md5sum: hashsum
 *menuentry: normal
+*plainmount: plainmount
 *probe: probe
 *read: read
 *read_byte: memrw
@@ -57,11 +59,12 @@ break: normal
 cat: minicmd
 chainloader: chain
 clear: normal
-cmp: cmp
 configfile: configfile
 continue: normal
 cutmem: mmap
 date: date
+decrement: increment
+deepin_gfxmode: deepin_gfxmode
 devicetree: fdt
 distrust: pgp
 dump: minicmd
@@ -76,6 +79,7 @@ fwsetup: efifwsetup
 gptsync: gptsync
 halt: halt
 help: minicmd
+increment: increment
 initrd: linux
 linux: linux
 list_trusted: pgp
@@ -92,6 +96,7 @@ mactelbless: macbless
 net_add_addr: net
 net_add_dns: net
 net_add_route: net
+net_bootp6: net
 net_bootp: net
 net_del_addr: net
 net_del_dns: net
