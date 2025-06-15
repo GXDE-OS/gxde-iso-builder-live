@@ -105,7 +105,7 @@ case $2 in
                 sudo cp crimson /usr/share/debootstrap/scripts/ -v
         fi
         sudo debootstrap --no-check-gpg --arch $1 \
-            --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
+            --include=deepin-keyring,sudo,vim \
             crimson $debianRootfsPath https://mirrors.hit.edu.cn/deepin/beige/
         sudo cp $programPath/gxde-temp-hetao.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
     ;;
