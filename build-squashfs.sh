@@ -215,8 +215,9 @@ installWithAptss install linux-kernel-gxde-$1 -y
 if [[ $1 == amd64 ]] || [[ $1 == i386 ]] || [[ $1 == mips64el ]]; then
     installWithAptss install linux-kernel-oldstable-gxde-$1 -y
 fi
-if [[ $1 == loong64 ]]; then
-    installWithAptss install linux-kernel-loongnix-gxde-loong64 -y
+if [[ $2 == hetao ]]; then
+    # 安装 HWE 内核
+    installWithAptss install linux-kernel-hwe-gxde-loong64 -y
 fi
 # 禁用 nmbd
 chrootCommand systemctl disable nmbd
@@ -290,6 +291,12 @@ do
         cp ../../$debianRootfsPath/boot/${initrdList[i]} live/initrd.img-oldstable -v
     fi
 done
+if [[ ! -f live/initrd.img-oldstable ]] ;then
+    cp live/initrd.img live/initrd.img-oldstable
+fi
+if [[ ! -f live/vmlinuz-oldstable ]] ;then
+    cp live/vmlinuz live/vmlinuz-oldstable
+fi
 sudo mv ../../filesystem.squashfs live/filesystem.squashfs -v
 cd ..
 bash $1-build.sh
