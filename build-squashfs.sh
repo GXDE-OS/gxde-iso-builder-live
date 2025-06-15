@@ -108,6 +108,7 @@ case $2 in
             --include=deepin-keyring,sudo,vim \
             crimson $debianRootfsPath https://mirrors.hit.edu.cn/deepin/beige/
         sudo cp $programPath/gxde-temp-hetao.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
+        sudo sed -i "s/main/main commercial community/g" $debianRootfsPath/etc/apt/sources.list
     ;;
     *)
         buildDebianRootf $1 bookworm
@@ -221,8 +222,11 @@ if [[ $2 == hetao ]]; then
 fi
 # 禁用 nmbd
 chrootCommand systemctl disable nmbd
-#installWithAptss install linux-firmware -y
-installWithAptss install firmware-linux -y
+if [[ $2 == hetao ]]; then
+    installWithAptss install linux-firmware -y
+else
+    installWithAptss install firmware-linux -y
+fi
 installWithAptss install firmware-iwlwifi firmware-realtek -y
 installWithAptss install firmware-sof-signed -y
 installWithAptss install grub-common -y
