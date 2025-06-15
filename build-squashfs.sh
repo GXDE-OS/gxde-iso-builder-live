@@ -100,6 +100,15 @@ case $2 in
             loongnix $debianRootfsPath https://pkg.loongnix.cn/loongnix/25
         sudo cp $programPath/gxde-temp-meimei.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
     ;;
+    "hetao")
+        if [[ ! -e /usr/share/debootstrap/scripts/loongnix ]]; then
+                sudo cp crimson /usr/share/debootstrap/scripts/ -v
+        fi
+        sudo debootstrap --no-check-gpg --arch $1 \
+            --include=debian-ports-archive-keyring,debian-archive-keyring,sudo,vim \
+            loongnix $debianRootfsPath https://mirrors.hit.edu.cn/deepin/beige/
+        sudo cp $programPath/gxde-temp-hetao.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
+    ;;
     *)
         buildDebianRootf $1 bookworm
         sudo cp $programPath/gxde-temp-bixie.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
@@ -127,8 +136,8 @@ set +e
 
 sudo $programPath/pardus-chroot $debianRootfsPath
 chrootCommand apt update -o Acquire::Check-Valid-Until=false
-chrootCommand apt install debian-ports-archive-keyring -y
-chrootCommand apt install debian-archive-keyring sudo vim -y
+chrootCommand apt install debian-ports-archive-keyring debian-archive-keyring -y
+chrootCommand apt install sudo vim -y
 chrootCommand apt install gxde-source -y
 chrootCommand rm -rfv /etc/apt/sources.list.d/temp.list
 chrootCommand apt update -o Acquire::Check-Valid-Until=false
