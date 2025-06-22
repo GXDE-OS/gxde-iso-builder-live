@@ -154,8 +154,17 @@ chrootCommand aptss update -o Acquire::Check-Valid-Until=false
 
 # 
 installWithAptss install gxde-desktop --install-recommends -y
+# 启用 lightdm
+chrootCommand systemctl enable lightdm
+chrootCommand dpkg-reconfigure gxde-session-ui
 #if [[ $1 != "mips64el" ]]; then
-installWithAptss install calamares-settings-gxde --install-recommends -y
+if [[ $2 == "hetao" ]]; then
+    installWithAptss install calamares-settings-deepin --install-recommends -y
+    # 安装该包以正常运行 dtk6 应用
+    installWithAptss install dde-qt6integration dde-qt6xcb-plugin -y
+else
+    installWithAptss install calamares-settings-gxde --install-recommends -y
+fi
 #else
 #    installWithAptss install gxde-installer --install-recommends -y
 #fi
@@ -181,7 +190,10 @@ elif [[ $1 == amd64 ]]; then
     chrootCommand aptss update -o Acquire::Check-Valid-Until=false
     chrootCommand aptss install firefox-spark -y
     chrootCommand aptss install spark-deepin-cloud-print spark-deepin-cloud-scanner -y
-    installWithAptss install dummyapp-wps-office dummyapp-spark-deepin-wine-runner boot-repair -y
+    installWithAptss install dummyapp-wps-office dummyapp-spark-deepin-wine-runner -y
+    if [[ $2 != "hetao" ]]; then
+        installWithAptss install boot-repair -y
+    fi
 elif [[ $1 == arm64 ]]; then
     chrootCommand aptss install spark-store -y
     chrootCommand aptss update -o Acquire::Check-Valid-Until=false
