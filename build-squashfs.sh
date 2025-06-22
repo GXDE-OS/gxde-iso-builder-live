@@ -218,7 +218,7 @@ if [[ $1 == amd64 ]] || [[ $1 == i386 ]] || [[ $1 == mips64el ]]; then
 fi
 if [[ $2 == hetao ]]; then
     # 安装 HWE 内核
-    installWithAptss install linux-kernel-hwe-gxde-loong64 -y
+    installWithAptss install linux-kernel-hwe-gxde-$1 -y
 fi
 # 禁用 nmbd
 chrootCommand systemctl disable nmbd
