@@ -129,7 +129,9 @@ if [[ $2 == "" ]] || [[ $2 == "tianlu" ]] || [[ $2 == "bixie" ]]; then
     fi
 fi
 sudo cp $programPath/os-release $debianRootfsPath/usr/lib/os-release
-sudo sed -i "s/main/main contrib non-free non-free-firmware/g" $debianRootfsPath/etc/apt/sources.list
+if [[ $2 != "hetao" ]]; then
+    sudo sed -i "s/main/main contrib non-free non-free-firmware/g" $debianRootfsPath/etc/apt/sources.list
+fi
 
 
 set +e
