@@ -128,7 +128,7 @@ if [[ $2 == "" ]] || [[ $2 == "tianlu" ]] || [[ $2 == "bixie" ]]; then
         sudo cp $programPath/99bookworm-backports $debianRootfsPath/etc/apt/preferences.d/ -v
     fi
 fi
-sudo cp $programPath/os-release $debianRootfsPath/usr/lib/os-release
+#sudo cp $programPath/os-release $debianRootfsPath/usr/lib/os-release
 if [[ $2 != "hetao" ]]; then
     sudo sed -i "s/main/main contrib non-free non-free-firmware/g" $debianRootfsPath/etc/apt/sources.list
 fi
