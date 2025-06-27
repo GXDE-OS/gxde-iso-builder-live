@@ -230,11 +230,11 @@ installWithAptss install linux-kernel-gxde-$1 -y
 if [[ $1 == amd64 ]] || [[ $1 == i386 ]] || [[ $1 == mips64el ]]; then
     installWithAptss install linux-kernel-oldstable-gxde-$1 -y
 fi
-if [[ $1 == arm64 ]]; then
-    if [[ $2 == hetao ]]; then
-        # 安装 HWE 内核
-        installWithAptss install linux-kernel-hwe-gxde-$1 -y
-    else
+if [[ $2 == hetao ]]; then
+    # 安装 HWE 内核
+    installWithAptss install linux-kernel-hwe-gxde-$1 -y
+else
+    if [[ $1 == arm64 ]]; then
         installWithAptss install linux-kernel-phytium-gxde-arm64 -y
     fi
 fi
