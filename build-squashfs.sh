@@ -69,8 +69,9 @@ if [[ $1 == aptss ]] || [[ $2 == aptss ]]|| [[ $3 == aptss ]]; then
     export isUnAptss=0
 fi
 sudo rm -rf grub-deb
-sudo apt install debootstrap debian-archive-keyring \
-    debian-ports-archive-keyring qemu-user-static genisoimage xorriso \
+sudo apt install debian-archive-keyring debian-ports-archive-keyring -y
+sudo apt install debootstrap  \
+    qemu-user-static genisoimage xorriso \
     squashfs-tools -y
 # 构建核心系统
 set +e
