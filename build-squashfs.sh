@@ -157,13 +157,10 @@ installWithAptss install gxde-desktop --install-recommends -y
 # 启用 lightdm
 chrootCommand systemctl enable lightdm
 chrootCommand dpkg-reconfigure gxde-session-ui
-#if [[ $1 != "mips64el" ]]; then
+installWithAptss install calamares-settings-gxde --install-recommends -y
 if [[ $2 == "hetao" ]]; then
-    installWithAptss install calamares-settings-deepin --install-recommends -y
     # 安装该包以正常运行 dtk6 应用
-    installWithAptss install dde-qt6integration dde-qt6xcb-plugin -y
-else
-    installWithAptss install calamares-settings-gxde --install-recommends -y
+    installWithAptss install dde-qt6integration dde-qt6xcb-plugin --install-recommends -y
 fi
 #else
 #    installWithAptss install gxde-installer --install-recommends -y
