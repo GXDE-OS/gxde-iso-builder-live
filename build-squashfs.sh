@@ -154,7 +154,7 @@ installWithAptss install gxde-desktop-live --no-install-recommends -y
 # 启用 lightdm
 chrootCommand systemctl enable lightdm
 
-installWithAptss install linux-kernel-hwe-gxde-$1 -y
+installWithAptss install linux-kernel-hwe-gxde-$1 --no-install-recommends -y
 
 # 拷贝 kernel
 mkdir kernel
