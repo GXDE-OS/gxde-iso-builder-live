@@ -54,6 +54,7 @@ function buildDebianRootf() {
 }
 programPath=$(cd $(dirname $0); pwd)
 debianRootfsPath=debian-rootfs
+codeName=hetao
 if [[ $1 == "" ]]; then
     echo 请指定架构：i386 amd64 arm64 mips64el loong64
     echo 还可以代号以构建内测镜像
@@ -65,7 +66,7 @@ if [[ -d $debianRootfsPath ]]; then
     sudo rm -rf $debianRootfsPath
 fi
 export isUnAptss=1
-if [[ $1 == aptss ]] || [[ $2 == aptss ]]|| [[ $3 == aptss ]]; then
+if [[ $1 == aptss ]] || [[ $codeName == aptss ]]|| [[ $2 == aptss ]]; then
     export isUnAptss=0
 fi
 sudo rm -rf grub-deb
@@ -75,7 +76,7 @@ sudo apt install debootstrap  \
     squashfs-tools -y
 # 构建核心系统
 set +e
-case $2 in
+case $codeName in
     "tianlu")
         buildDebianRootf $1 bookworm
         sudo cp $programPath/gxde-temp-bixie.list $debianRootfsPath/etc/apt/sources.list.d/temp.list -v
@@ -120,7 +121,7 @@ esac
 # 修改系统主机名
 echo "gxde-os-live" | sudo tee $debianRootfsPath/etc/hostname
 # 写入源
-if [[ $2 == "" ]] || [[ $2 == "tianlu" ]] || [[ $2 == "bixie" ]]; then
+if [[ $codeName == "" ]] || [[ $codeName == "tianlu" ]] || [[ $codeName == "bixie" ]]; then
     if [[ $1 == loong64 ]]; then
         sudo cp $programPath/debian-unreleased.list $debianRootfsPath/etc/apt/sources.list -v
     else
@@ -130,7 +131,7 @@ if [[ $2 == "" ]] || [[ $2 == "tianlu" ]] || [[ $2 == "bixie" ]]; then
     fi
 fi
 #sudo cp $programPath/os-release $debianRootfsPath/usr/lib/os-release
-if [[ $2 != "hetao" ]]; then
+if [[ $codeName != "hetao" ]]; then
     sudo sed -i "s/main/main contrib non-free non-free-firmware/g" $debianRootfsPath/etc/apt/sources.list
 fi
 
