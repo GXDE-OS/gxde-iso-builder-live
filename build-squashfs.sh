@@ -118,7 +118,7 @@ case $2 in
 esac
 
 # 修改系统主机名
-echo "gxde-os" | sudo tee $debianRootfsPath/etc/hostname
+echo "gxde-os-live" | sudo tee $debianRootfsPath/etc/hostname
 # 写入源
 if [[ $2 == "" ]] || [[ $2 == "tianlu" ]] || [[ $2 == "bixie" ]]; then
     if [[ $1 == loong64 ]]; then
@@ -140,130 +140,39 @@ set +e
 
 sudo $programPath/pardus-chroot $debianRootfsPath
 chrootCommand apt update -o Acquire::Check-Valid-Until=false
-chrootCommand apt install debian-ports-archive-keyring debian-archive-keyring -y
-chrootCommand apt install sudo vim -y
-chrootCommand apt install gxde-source -y
+chrootCommand apt install sudo vim --no-install-recommends -y
+chrootCommand apt install gxde-source --no-install-recommends -y
 chrootCommand rm -rfv /etc/apt/sources.list.d/temp.list
 chrootCommand apt update -o Acquire::Check-Valid-Until=false
-if [[ $2 == "tianlu" ]] || [[ $2 == "zhuangzhuang" ]]; then
-    chrootCommand apt install gxde-testing-source -y
-    chrootCommand apt update -o Acquire::Check-Valid-Until=false
-fi
-chrootCommand apt install aptss -y
+
+chrootCommand apt install aptss --no-install-recommends -y
 chrootCommand aptss update -o Acquire::Check-Valid-Until=false
 
-
 # 
-installWithAptss install gxde-desktop --install-recommends -y
+installWithAptss install gxde-desktop-live --no-install-recommends -y
 # 启用 lightdm
 chrootCommand systemctl enable lightdm
-chrootCommand dpkg-reconfigure gxde-session-ui
-installWithAptss install calamares-settings-gxde --install-recommends -y
-if [[ $2 == "hetao" ]]; then
-    # 安装该包以正常运行 dtk6 应用
-    installWithAptss install dde-qt6integration dde-qt6xcb-plugin --install-recommends -y
-fi
-#else
-#    installWithAptss install gxde-installer --install-recommends -y
-#fi
 
-sudo rm -rf $debianRootfsPath/var/lib/dpkg/info/plymouth-theme-gxde-logo.postinst
-installWithAptss install live-task-recommended live-task-standard live-config-systemd \
-    live-boot -y
-installWithAptss install  fcitx5-frontend-all fcitx5-pinyin fcitx5-chinese-addons libime-bin libudisks2-qt5-0 fcitx5 -y
-# 
+installWithAptss install linux-kernel-hwe-gxde-$1 -y
 
-installWithAptss update -o Acquire::Check-Valid-Until=false
+# 拷贝 kernel
+mkdir kernel
+sudo cp $debianRootfsPath/boot/initrd.img-* kernel/initrd.img -v
+sudo cp $debianRootfsPath/boot/vmlinuz-* kernel/vmlinuz -v
 
-installWithAptss full-upgrade -y
-
-installWithAptss install linglong-bin linglong-box -y
-
-if [[ $1 == loong64 ]]; then
-    chrootCommand aptss install spark-store -y
-    chrootCommand aptss update -o Acquire::Check-Valid-Until=false
-    chrootCommand aptss install cn.loongnix.lbrowser -y
-elif [[ $1 == amd64 ]]; then
-    chrootCommand aptss install spark-store -y
-    chrootCommand aptss update -o Acquire::Check-Valid-Until=false
-    chrootCommand aptss install firefox-spark -y
-    chrootCommand aptss install spark-deepin-cloud-print spark-deepin-cloud-scanner -y
-    installWithAptss install dummyapp-wps-office dummyapp-spark-deepin-wine-runner -y
-    if [[ $2 != "hetao" ]]; then
-        installWithAptss install boot-repair -y
-    fi
-elif [[ $1 == arm64 ]]; then
-    chrootCommand aptss install spark-store -y
-    chrootCommand aptss update -o Acquire::Check-Valid-Until=false
-    chrootCommand aptss install firefox-spark -y
-    installWithAptss install dummyapp-wps-office dummyapp-spark-deepin-wine-runner -y
-elif [[ $1 == "mips64el" ]]; then
-    chrootCommand apt install loongsonapplication -y
-    installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
-elif [[ $1 == "i386" ]]; then
-    chrootCommand apt install aptss -y
-    installWithAptss update -o Acquire::Check-Valid-Until=false
-    installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
-    installWithAptss install dummyapp-spark-deepin-wine-runner boot-repair -y
-else 
-    chrootCommand apt install aptss -y
-    installWithAptss update -o Acquire::Check-Valid-Until=false
-    installWithAptss install firefox-esr firefox-esr-l10n-zh-cn -y
-fi
-#if [[ $1 == arm64 ]] || [[ $1 == loong64 ]]; then
-#    installWithAptss install spark-box64 -y
-#fi
-#chrootCommand apt install grub-efi-$1 -y
-#if [[ $1 != amd64 ]]; then
-#    chrootCommand apt install grub-efi-$1 -y
-#fi
-# 卸载无用应用
-installWithAptss purge  mlterm mlterm-tiny deepin-terminal-gtk deepin-terminal ibus systemsettings deepin-wine8-stable breeze-* -y
-# 安装内核
-if [[ $1 != amd64 ]]; then
-    installWithAptss autopurge "linux-image-*" "linux-headers-*" -y
-fi
-installWithAptss install linux-kernel-gxde-$1 -y
-# 如果为 amd64/i386 则同时安装 oldstable 内核
-if [[ $1 == amd64 ]] || [[ $1 == i386 ]] || [[ $1 == mips64el ]]; then
-    installWithAptss install linux-kernel-oldstable-gxde-$1 -y
-fi
-if [[ $2 == hetao ]]; then
-    # 安装 HWE 内核
-    installWithAptss install linux-kernel-hwe-gxde-$1 -y
-else
-    if [[ $1 == arm64 ]]; then
-        installWithAptss install linux-kernel-phytium-gxde-arm64 -y
-    fi
-fi
+# 卸载内核
+installWithAptss autopurge linux-kernel-hwe-gxde-$1 linux-image-* linux-headers-* -y
 
 # 禁用 nmbd
 chrootCommand systemctl disable nmbd
-if [[ $2 == hetao ]]; then
-    installWithAptss install linux-firmware -y
-else
-    installWithAptss install firmware-linux -y
-fi
-installWithAptss install firmware-iwlwifi firmware-realtek -y
-installWithAptss install firmware-sof-signed -y
-installWithAptss install grub-common -y
+
 # 清空临时文件
 installWithAptss autopurge fonts-noto-extra fonts-noto-ui-extra fonts-noto-cjk-extra -y
 installWithAptss autopurge -y
 installWithAptss clean
-# 下载所需的安装包
-chrootCommand apt install grub-pc --download-only -y
-chrootCommand apt install grub-efi-$1 --download-only -y
-chrootCommand apt install grub-efi --download-only -y
-chrootCommand apt install grub-common --download-only -y
-chrootCommand apt install cryptsetup-initramfs cryptsetup keyutils --download-only -y
 
-
-mkdir grub-deb
-sudo cp $debianRootfsPath/var/cache/apt/archives/*.deb grub-deb
 # 清空临时文件
 installWithAptss clean
-sudo touch $debianRootfsPath/etc/deepin/calamares
 sudo rm $debianRootfsPath/etc/apt/sources.list.d/debian.list -rf
 sudo rm $debianRootfsPath/etc/apt/sources.list.d/debian-backports.list -rf
 sudo rm -rf $debianRootfsPath/var/log/*
@@ -291,36 +200,14 @@ cd iso-template/$1
 rm -rfv live/*
 rm -rfv deb/*/
 mkdir -p live
-mkdir -p deb
-# 添加 deb 包
-cd deb
-./addmore.py ../../../grub-deb/*.deb
-cd ..
 # 拷贝内核
 # 获取内核数量
-kernelNumber=$(ls -1 ../../$debianRootfsPath/boot/vmlinuz-* | wc -l)
-vmlinuzList=($(ls -1 ../../$debianRootfsPath/boot/vmlinuz-* | sort -rV))
-initrdList=($(ls -1 ../../$debianRootfsPath/boot/initrd.img-* | sort -rV))
-for i in $( seq 0 $(expr $kernelNumber - 1) )
-do
-    if [[ $i == 0 ]]; then
-        cp ../../$debianRootfsPath/boot/${vmlinuzList[i]} live/vmlinuz -v
-        cp ../../$debianRootfsPath/boot/${initrdList[i]} live/initrd.img -v
-    fi
-    if [[ $i == 1 ]]; then
-        cp ../../$debianRootfsPath/boot/${vmlinuzList[i]} live/vmlinuz-oldstable -v
-        cp ../../$debianRootfsPath/boot/${initrdList[i]} live/initrd.img-oldstable -v
-    fi
-done
-if [[ ! -f live/initrd.img-oldstable ]] ;then
-    cp live/initrd.img live/initrd.img-oldstable
-fi
-if [[ ! -f live/vmlinuz-oldstable ]] ;then
-    cp live/vmlinuz live/vmlinuz-oldstable
-fi
+cp ../../kernel/vmlinuz live/vmlinuz -v
+cp ../../kernel/initrd.img live/initrd.img -v
+
 sudo mv ../../filesystem.squashfs live/filesystem.squashfs -v
 cd ..
 bash $1-build.sh
-mv gxde.iso ..
+mv gxde.iso ../gxde-live.iso
 cd ..
-du -h gxde.iso
+du -h gxde-live.iso
