@@ -65,10 +65,7 @@ if [[ -d $debianRootfsPath ]]; then
     UNMount $debianRootfsPath
     sudo rm -rf $debianRootfsPath
 fi
-export isUnAptss=1
-if [[ $1 == aptss ]] || [[ $codeName == aptss ]]|| [[ $2 == aptss ]]; then
-    export isUnAptss=0
-fi
+export isUnAptss=0
 sudo rm -rf grub-deb
 sudo apt install debian-archive-keyring debian-ports-archive-keyring -y
 sudo apt install debootstrap  \
